@@ -18,7 +18,8 @@ export interface Diagram {
 
 interface DiagramNode {
     name: string,
-    type: string
+    type: string,
+    image_name?: string
 }
 
 export interface DiagramEdge {

@@ -33,9 +33,9 @@ export default function Container(){
     const [rightLinkDataArray, setRightLinkDataArray] = useState<EdgeToLinkDict>({});
     const [diagrammaticProofStates, setDiagrammaticProofStates] = useState<DiagrammaticProofState[]>([]);
     const [slideValue, setSlideValue] = useState<number>(0);
-    const [leftSlideIndex, setLeftSlideIndex] = useState<number>(0);
+    const [leftSlideMaxIndex, setLeftSlideMaxIndex] = useState<number>(0);
     const [leftSlideValue, setLeftSlideValue] = useState<number>(0);
-    const [rightSlideIndex, setRightSlideIndex] = useState<number>(0);
+    const [rightSlideMaxIndex, setRightSlideMaxIndex] = useState<number>(0);
     const [rightSlideValue, setRightSlideValue] = useState<number>(0);
     const leftDiagram = customDiagram()
     const rightDiagram = customDiagram()
@@ -74,8 +74,8 @@ export default function Container(){
     async function initializeDiagrammaticProof(diagrammaticProof: DiagrammaticProofServiceResponse) {
         const leftDiagramsLength = diagrammaticProof.left_diagrammatic_proof.diagrams.length
         const rightDiagramsLength = diagrammaticProof.right_diagrammatic_proof.diagrams.length
-        setLeftSlideIndex(leftDiagramsLength-1)
-        setRightSlideIndex(rightDiagramsLength-1)
+        setLeftSlideMaxIndex(leftDiagramsLength-1)
+        setRightSlideMaxIndex(rightDiagramsLength-1)
 
         const rightDiagram = initializeDiagram(diagrammaticProof.right_diagrammatic_proof.diagrams[0], setRightNodeDataArray, setRightLinkDataArray)
         const leftDiagram = initializeDiagram(diagrammaticProof.left_diagrammatic_proof.diagrams[0], setLeftNodeDataArray, setLeftLinkDataArray)
@@ -189,10 +189,10 @@ export default function Container(){
                         setSlideValue={setSlideValue}
                         handleDiagramsChange={handleDiagramsChange}
                         diagrammaticProofStates={diagrammaticProofStates}
-                        leftMaxIndex={leftSlideIndex}
+                        leftMaxIndex={leftSlideMaxIndex}
                         leftSlideValue={leftSlideValue}
                         setLeftSlideValue={setLeftSlideValue}
-                        rightMaxIndex={rightSlideIndex}
+                        rightMaxIndex={rightSlideMaxIndex}
                         rightSlideValue={rightSlideValue}
                         setRightSlideValue={setRightSlideValue}
                     />

@@ -16,21 +16,22 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
     newDiagramStates.nodeDict = moveAllNodes(newDiagramStates.nodeDict, +loc[0])
     const leftNodeLoc = newDiagramStates.nodeDict[diagram.removed_edge!!.left_node.name].loc.split(" ")
     const rightNodeLoc = newDiagramStates.nodeDict[diagram.removed_edge!!.right_node.name].loc.split(" ")
+
     if(leftNodeLoc[0] > rightNodeLoc[0]) {
-        console.log("entrou aqui")
-        newDiagramStates.nodeDict[diagram.created_edges!![1].left_node.name] =
-            {key: newNodeKey, color: 'black', loc: `${+loc[0]} ${+loc[1]}`}
-        newDiagramStates.linkDict[diagram.created_edges!![0].id] =
-            {key: removedLink.key, from: removedLink.from, to: newNodeKey, text: rightEdge}
-        newDiagramStates.linkDict[diagram.created_edges!![1].id] =
-            {key: -Math.random(), from: newNodeKey, to: removedLink.to, text: leftEdge}
+        createNodesAndLink(rightEdge, leftEdge, diagram.created_edges!![1].left_node.name);
     } else {
-        newDiagramStates.nodeDict[diagram.created_edges!![0].right_node.name] =
+        createNodesAndLink(leftEdge, rightEdge, diagram.created_edges!![0].right_node.name);
+    }
+
+    delete newDiagramStates.linkDict[diagram.removed_edge!!.id]
+
+    function createNodesAndLink(leftText: string, rightText: string, nodeName: string) {
+        newDiagramStates.nodeDict[nodeName] =
             {key: newNodeKey, color: 'black', loc: `${+loc[0]} ${+loc[1]}`}
         newDiagramStates.linkDict[diagram.created_edges!![0].id] =
-            {key: removedLink.key, from: removedLink.from, to: newNodeKey, text: leftEdge}
+            {key: removedLink.key, from: removedLink.from, to: newNodeKey, text: leftText}
         newDiagramStates.linkDict[diagram.created_edges!![1].id] =
-            {key: -Math.random(), from: newNodeKey, to: removedLink.to, text: rightEdge}
+            {key: -Math.random(), from: newNodeKey, to: removedLink.to, text: rightText}
     }
 }
 

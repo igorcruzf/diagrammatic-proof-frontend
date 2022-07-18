@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {linkDataEntry, nodeDataEntry} from "../Diagram/DiagramsArea";
 import {calculateDiagrammaticProof} from "../../services/DiagrammaticProofService";
 import "./RelationsInputForm.css"
 import OperatorButtons from "../OperatorsButtons/OperatorButtons";
@@ -9,7 +8,8 @@ export const intersection = "∩"
 export const inverse = "⁻¹"
 
 export default function RelationsInputForm(props: {
-    setDiagrammaticProof: Function
+    setDiagrammaticProof: Function,
+    setSlideValue: Function
 }) {
     const [leftDiagramInput, setLeftDiagramInput] = useState<string>("(A" + composition + "B)" + inverse);
     const [rightDiagramInput, setRightDiagramInput] = useState<string>("A" + intersection + "B");
@@ -28,6 +28,7 @@ export default function RelationsInputForm(props: {
         const rightInput = transformInput(rightDiagramInput)
         calculateDiagrammaticProof(leftInput + "inc" + rightInput).then(
             diagrammaticProofResponse => {
+                props.setSlideValue(0)
                 props.setDiagrammaticProof(diagrammaticProofResponse)
             }
         )

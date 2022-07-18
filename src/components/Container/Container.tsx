@@ -33,6 +33,7 @@ export default function Container(){
     const [rightLinkDataArray, setRightLinkDataArray] = useState<EdgeToLinkDict>({});
     const [diagrammaticProofStates, setDiagrammaticProofStates] = useState<DiagrammaticProofState[]>([]);
     const [maxIndex, setMaxIndex] = useState<number>(0);
+    const [slideValue, setSlideValue] = useState<number>(0);
     const leftDiagram = customDiagram()
     const rightDiagram = customDiagram()
 
@@ -154,6 +155,7 @@ export default function Container(){
     return (
         <div>
             <RelationsInputForm
+                setSlideValue={setSlideValue}
                 setDiagrammaticProof={initializeDiagrammaticProof}
             />
             {
@@ -169,6 +171,8 @@ export default function Container(){
                                       diagram={rightDiagram}/>
                     </div>
                     <ChangeDiagramsContainer
+                        slideValue={slideValue}
+                        setSlideValue={setSlideValue}
                         handleDiagramsChange={handleDiagramsChange}
                         diagrammaticProofStates={diagrammaticProofStates}
                         maxIndex={maxIndex}/>

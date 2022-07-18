@@ -8,7 +8,10 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
     const leftEdge = flattenEdgeLabels(diagram.created_edges!![0])
     const removedEdge = flattenEdgeLabels(diagram.removed_edge!!)
     const removedLink = newDiagramStates.linkDict[removedEdge]
-    const loc = newDiagramStates.nodeDict[diagram.created_edges!![0].left_node.name].loc.split(" ")
+
+    const locLeft = newDiagramStates.nodeDict[diagram.created_edges!![0].left_node.name].loc.split(" ")
+    const locRight = newDiagramStates.nodeDict[diagram.created_edges!![1].right_node.name].loc.split(" ")
+    const loc = locRight[0] > locLeft[0]? locRight : locLeft
 
     newDiagramStates.nodeDict = moveAllNodes(newDiagramStates.nodeDict, +loc[0])
 

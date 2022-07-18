@@ -11,9 +11,13 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
 
     const locLeft = newDiagramStates.nodeDict[diagram.created_edges!![0].left_node.name].loc.split(" ")
     const locRight = newDiagramStates.nodeDict[diagram.created_edges!![1].right_node.name].loc.split(" ")
-    const loc = locRight[0] > locLeft[0]? locRight : locLeft
+    const loc = +locRight[0] > +locLeft[0]? locRight : locLeft
 
-    newDiagramStates.nodeDict = moveAllNodes(newDiagramStates.nodeDict, +loc[0])
+    if(Math.abs((+locRight[0] - +locLeft[0])) <= 100) {
+        newDiagramStates.nodeDict = moveAllNodes(newDiagramStates.nodeDict, +loc[0])
+    } else {
+        loc[0] = String(+loc[0] - (Math.abs((+locRight[0] - +locLeft[0]) / 2)))
+    }
     const leftNodeLoc = newDiagramStates.nodeDict[diagram.removed_edge!!.left_node.name].loc.split(" ")
     const rightNodeLoc = newDiagramStates.nodeDict[diagram.removed_edge!!.right_node.name].loc.split(" ")
 
@@ -27,7 +31,7 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
 
     function createNodesAndLink(leftText: string, rightText: string, nodeName: string) {
         newDiagramStates.nodeDict[nodeName] =
-            {key: newNodeKey, color: 'black', loc: `${+loc[0]} ${+loc[1]}`}
+            {key: newNodeKey, color: 'black', loc: `${+loc[0]} ${+loc[1]-10}`}
         newDiagramStates.linkDict[diagram.created_edges!![0].id] =
             {key: removedLink.key, from: removedLink.from, to: newNodeKey, text: leftText}
         newDiagramStates.linkDict[diagram.created_edges!![1].id] =

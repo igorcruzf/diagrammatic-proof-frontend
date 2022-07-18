@@ -7,6 +7,7 @@ import {Diagram, DiagrammaticProofServiceResponse} from "../../services/Diagramm
 import ChangeDiagramsContainer from "../ChangeDiagramsContainer/ChangeDiagramsContainer";
 import {flattenEdgeLabels} from "../../services/FlattenEdge";
 import {removeComposition, removeIntersection, removeInverse} from "./DiagramOperationTransformer";
+import createHomomorphicState from "./DiagramHomomorphismTransformer";
 
 export interface EdgeToLinkDict {
     [edge_id: string]: linkDataEntry;
@@ -74,8 +75,8 @@ export default function Container(){
     async function initializeDiagrammaticProof(diagrammaticProof: DiagrammaticProofServiceResponse) {
         const leftDiagramsLength = diagrammaticProof.left_diagrammatic_proof.diagrams.length
         const rightDiagramsLength = diagrammaticProof.right_diagrammatic_proof.diagrams.length
-        setLeftSlideMaxIndex(leftDiagramsLength-1)
-        setRightSlideMaxIndex(rightDiagramsLength-1)
+        setLeftSlideMaxIndex(diagrammaticProof.homomorphic? leftDiagramsLength : leftDiagramsLength-1)
+        setRightSlideMaxIndex(diagrammaticProof.homomorphic? rightDiagramsLength : rightDiagramsLength-1)
 
         const rightDiagram = initializeDiagram(diagrammaticProof.right_diagrammatic_proof.diagrams[0], setRightNodeDataArray, setRightLinkDataArray)
         const leftDiagram = initializeDiagram(diagrammaticProof.left_diagrammatic_proof.diagrams[0], setLeftNodeDataArray, setLeftLinkDataArray)
@@ -103,6 +104,12 @@ export default function Container(){
                 leftDiagram: leftNewState,
                 rightDiagram: rightNewState
             })
+        }
+        if(diagrammaticProof.homomorphic){
+            diagrammaticProofStates.push(
+                createHomomorphicState(diagrammaticProof, diagrammaticProofStates.at(-1)!!)
+            )
+
         }
         setDiagrammaticProofStates(diagrammaticProofStates)
     }

@@ -27,7 +27,7 @@ export function customDiagram() {
     diagram.nodeTemplateMap.add("Start",
         $(go.Node, 'Auto',
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Shape, 'TriangleLeft',
+            $(go.Shape, 'TriangleRight',
                 { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 0, maxSize: new go.Size(15, 15) },
                 // Shape.fill is bound to Node.data.color
                 new go.Binding('fill', 'color')

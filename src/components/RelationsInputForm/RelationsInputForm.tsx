@@ -41,6 +41,12 @@ export default function RelationsInputForm(props: {
             .replaceAll(inverse, "inv")
     }
 
+    function invertInput(){
+        const leftInput = leftDiagramInput
+        setLeftDiagramInput(rightDiagramInput)
+        setRightDiagramInput(leftInput)
+    }
+
     return (
         <form className={'form'} onSubmit={handleSubmit}>
             <div id={"relations-input"}>
@@ -48,7 +54,12 @@ export default function RelationsInputForm(props: {
                     <input type="text" value={leftDiagramInput} onChange={handleLeftDiagramInputChange} />
                     <OperatorButtons input={leftDiagramInput} setInput={setLeftDiagramInput}/>
                 </div>
-                <img id={'subset-eq'} src='images/subseteq.png' alt="Subset equals"/>
+                <div className={"subset-n-invert"}>
+                    <img id={'subset-eq'} src='images/subseteq.png' alt="Subset equals"/>
+                    <button type='button' className={'invert'} onClick={invertInput}>
+                        <img id={'invert-img'} src='images/invert.png' alt="Invert button"/>
+                    </button>
+                </div>
                 <div className={"right-input"}>
                     <input type="text" value={rightDiagramInput} onChange={handleRightDiagramInputChange} />
                     <OperatorButtons input={rightDiagramInput} setInput={setRightDiagramInput}/>

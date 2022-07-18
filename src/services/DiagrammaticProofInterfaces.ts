@@ -24,7 +24,8 @@ interface DiagramNode {
 export interface DiagramEdge {
     left_node: DiagramNode,
     right_node: DiagramNode,
-    label: Term | AtomicTerm
+    label: Term | AtomicTerm,
+    id: string
 }
 
 export interface Term {

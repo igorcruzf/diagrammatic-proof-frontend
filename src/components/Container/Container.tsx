@@ -9,7 +9,7 @@ import {flattenEdgeLabels} from "../../services/FlattenEdge";
 import {removeComposition, removeIntersection, removeInverse} from "./DiagramOperationTransformer";
 
 export interface EdgeToLinkDict {
-    [edge: string]: linkDataEntry;
+    [edge_id: string]: linkDataEntry;
 }
 
 export interface NodeToNodeDataDict{
@@ -139,7 +139,7 @@ export default function Container(){
         setNodeArray(nodeDict)
         const linkDict: EdgeToLinkDict = {}
         const flattenLabel = flattenEdgeLabels(diagram.edges[0])
-        linkDict[flattenLabel] = { key: -1, from: 0, to: 1, text: flattenLabel }
+        linkDict[diagram.edges[0].id] = { key: -1, from: 0, to: 1, text: flattenLabel }
         setLinkArray(linkDict)
         return {nodeDict, linkDict}
     }

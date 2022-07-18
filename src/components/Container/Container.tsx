@@ -20,6 +20,7 @@ export interface NodeToNodeDataDict{
 export interface DiagramStates {
     nodeDict: NodeToNodeDataDict
     linkDict: EdgeToLinkDict
+    feedBackMessage: string
 }
 
 export interface DiagrammaticProofState {
@@ -38,11 +39,16 @@ export default function Container(){
     const [leftSlideValue, setLeftSlideValue] = useState<number>(0);
     const [rightSlideMaxIndex, setRightSlideMaxIndex] = useState<number>(0);
     const [rightSlideValue, setRightSlideValue] = useState<number>(0);
+    const [leftFeedbackMessage, setLeftFeedbackMessage] = useState<string>("")
+    const [rightFeedbackMessage, setRightFeedbackMessage] = useState<string>("")
+
+
     const leftDiagram = customDiagram()
     const rightDiagram = customDiagram()
 
     function handleDiagramsChange(currentState: DiagrammaticProofState, direction: String) {
         if(direction === "LEFT" || direction === "BOTH") {
+            setLeftFeedbackMessage(currentState.leftDiagram.feedBackMessage)
             setLeftNodeDataArray(currentState.leftDiagram.nodeDict)
             setLeftLinkDataArray(currentState.leftDiagram.linkDict)
             handleLeftDiagramChange(
@@ -51,6 +57,7 @@ export default function Container(){
             )
         }
         if(direction === "RIGHT" || direction === "BOTH"){
+            setRightFeedbackMessage(currentState.rightDiagram.feedBackMessage)
             setRightNodeDataArray(currentState.rightDiagram.nodeDict)
             setRightLinkDataArray(currentState.rightDiagram.linkDict)
             handleRightDiagramChange(
@@ -80,6 +87,9 @@ export default function Container(){
 
         const rightDiagram = initializeDiagram(diagrammaticProof.right_diagrammatic_proof.diagrams[0], setRightNodeDataArray, setRightLinkDataArray)
         const leftDiagram = initializeDiagram(diagrammaticProof.left_diagrammatic_proof.diagrams[0], setLeftNodeDataArray, setLeftLinkDataArray)
+        setLeftFeedbackMessage("Initial diagram")
+        setRightFeedbackMessage("Initial diagram")
+
         const currentDiagrammaticProofStates = []
         currentDiagrammaticProofStates.push(
             {
@@ -114,6 +124,22 @@ export default function Container(){
         setDiagrammaticProofStates(diagrammaticProofStates)
     }
 
+
+    function convertDescriptionToFeedback(description: string, label?: string){
+        switch (description) {
+            case "BEGIN":
+                return "Initial diagram"
+            case "REMOVE_INVERSE":
+                return `Transforming inverse in ${label}`
+            case "REMOVE_COMPOSITION":
+                return `Transforming composition in ${label}`
+            case "REMOVE_INTERSECTION":
+                return `Transforming intersection in ${label}`
+            default:
+                return description
+        }
+    }
+
     function changeDiagramState(diagramStates: DiagramStates, diagram: Diagram | null){
         if(diagram === null) return diagramStates
         const newDiagramStates = {...diagramStates}
@@ -132,6 +158,8 @@ export default function Container(){
             default:
                 break
         }
+        newDiagramStates.feedBackMessage = convertDescriptionToFeedback(diagram.step_description,
+            flattenEdgeLabels(diagram.removed_edge!!))
         return newDiagramStates
     }
 
@@ -156,7 +184,7 @@ export default function Container(){
         const flattenLabel = flattenEdgeLabels(diagram.edges[0])
         linkDict[diagram.edges[0].id] = { key: -1, from: 0, to: 1, text: flattenLabel }
         setLinkArray(linkDict)
-        return {nodeDict, linkDict}
+        return {nodeDict, linkDict, feedBackMessage: convertDescriptionToFeedback(diagram.step_description)}
     }
 
     function getNodeDataArrayFromDict(nodeDict: NodeToNodeDataDict){
@@ -182,6 +210,14 @@ export default function Container(){
             {
                 diagrammaticProofStates.length !== 0 &&
                 <div>
+                    <div id={'feedback-container'}>
+                        <div className={'feedback'}>
+                            {leftFeedbackMessage}
+                        </div>
+                        <div className={'feedback'}>
+                            {rightFeedbackMessage}
+                        </div>
+                    </div>
                     <div id={"diagrams-areas"}>
                         <DiagramsArea
                             nodeDataArray={getNodeDataArrayFromDict(leftNodeDataArray)}

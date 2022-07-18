@@ -5,5 +5,22 @@
     justify-content: center;
     flex-direction: row;
     gap: 75px;
-    margin-top: 25px;
+    margin-top: 10px;
+}
+
+#feedback-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    gap: 75px;
+}
+
+.feedback{
+    width: 400px;
+    text-align: center;
+    color: #9b8b9b;
+    font-weight: bold;
+    font-family:'Brush Script MT', cursive
 }

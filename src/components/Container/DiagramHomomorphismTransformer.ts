@@ -25,7 +25,8 @@ export default function createHomomorphicState(diagrammaticProof: DiagrammaticPr
             index = 0
         }
     }
-
+    newLeftStates.feedBackMessage = "Showing colored homomorphism"
+    newRightStates.feedBackMessage = "Showing colored homomorphism"
     return {
         leftDiagram: newLeftStates,
         rightDiagram: newRightStates

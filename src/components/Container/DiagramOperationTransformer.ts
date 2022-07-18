@@ -28,9 +28,9 @@ export function removeIntersection(newDiagramStates: { nodeDict: NodeToNodeDataD
     const leftEdge = flattenEdgeLabels(diagram!!.created_edges!![0])
     const rightEdge = flattenEdgeLabels(diagram!!.created_edges!![1])
     newDiagramStates.linkDict[leftEdge] =
-        {key: -Math.random(), from: leftLink.to, to: leftLink.from, text: leftEdge}
+        {key: -Math.random(), from: leftLink.from, to: leftLink.to, text: leftEdge}
     newDiagramStates.linkDict[rightEdge] =
-        {key: -Math.random(), from: leftLink.to, to: leftLink.from, text: rightEdge}
+        {key: -Math.random(), from: leftLink.from, to: leftLink.to, text: rightEdge}
     delete newDiagramStates.linkDict[flattenEdgeLabels(diagram!!.removed_edge!!)]
 }
 

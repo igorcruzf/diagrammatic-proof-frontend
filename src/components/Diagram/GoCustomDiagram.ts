@@ -19,7 +19,7 @@ export function customDiagram() {
         $(go.Node, 'Auto',
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
             $(go.Shape, 'Circle',
-                { name: 'SHAPE', fill: 'white', strokeWidth: 0, maxSize: new go.Size(20, 20) },
+                { name: 'SHAPE', fill: 'white', strokeWidth: 0, maxSize: new go.Size(15, 15) },
                 // Shape.fill is bound to Node.data.color
                 new go.Binding('fill', 'color'))
         );
@@ -27,10 +27,10 @@ export function customDiagram() {
     diagram.nodeTemplateMap.add("Start",
         $(go.Node, 'Auto',
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Shape, 'MinusLine',
-                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 2, maxSize: new go.Size(20, 20) },
+            $(go.Shape, 'TriangleLeft',
+                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 0, maxSize: new go.Size(15, 15) },
                 // Shape.fill is bound to Node.data.color
-                new go.Binding('stroke', 'color')
+                new go.Binding('fill', 'color')
             ),
         )
     );
@@ -38,10 +38,10 @@ export function customDiagram() {
     diagram.nodeTemplateMap.add("End",
         $(go.Node, 'Auto',
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
-            $(go.Shape, 'PlusLine',
-                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 2, maxSize: new go.Size(20, 20) },
+            $(go.Shape, 'None',
+                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 0, maxSize: new go.Size(15, 15) },
                 // Shape.fill is bound to Node.data.color
-                new go.Binding('stroke', 'color'))
+                new go.Binding('fill', 'color'))
         )
     );
 
@@ -74,10 +74,12 @@ export function customDiagram() {
                         textAlign: "center",
                         font: "9pt helvetica, arial, sans-serif",
                         margin: 4,
-                        editable: false  // enable in-place editing
+                        editable: true,  // enable in-place editing,
+                        maxSize: new go.Size(100, NaN),
+                        maxLines: 1, overflow: go.TextBlock.OverflowEllipsis
                     },
                     // editing the text automatically updates the model data
-                    new go.Binding("text").makeTwoWay())
+                    new go.Binding("text").makeTwoWay()),
             )
         );
 

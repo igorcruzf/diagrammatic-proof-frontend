@@ -10,9 +10,7 @@ function flattenTerm(term: AtomicTerm | Term){
         return term.name
     }
     let flatTerm = "";
-    if(term.operation === "INVERSE"){
-        flatTerm += "("
-    }
+    flatTerm += "("
     flatTerm+=flattenTerm(term.left_term)
     if(term.operation === "INVERSE"){
         flatTerm += ")"
@@ -20,6 +18,9 @@ function flattenTerm(term: AtomicTerm | Term){
     flatTerm+=transformOperation(term.operation)
     if(term.right_term !== undefined){
         flatTerm+=flattenTerm(term.right_term)
+    }
+    if(term.operation !== "INVERSE"){
+        flatTerm += ")"
     }
     return flatTerm
 }

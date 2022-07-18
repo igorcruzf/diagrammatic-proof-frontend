@@ -9,7 +9,7 @@ export const inverse = "⁻¹"
 
 export default function RelationsInputForm(props: {
     setDiagrammaticProof: Function,
-    setSlideValue: Function
+    resetSlidesValue: Function
 }) {
     const [leftDiagramInput, setLeftDiagramInput] = useState<string>("(A" + composition + "B)" + inverse);
     const [rightDiagramInput, setRightDiagramInput] = useState<string>("A" + intersection + "B");
@@ -28,7 +28,7 @@ export default function RelationsInputForm(props: {
         const rightInput = transformInput(rightDiagramInput)
         calculateDiagrammaticProof(leftInput + "inc" + rightInput).then(
             diagrammaticProofResponse => {
-                props.setSlideValue(0)
+                props.resetSlidesValue()
                 props.setDiagrammaticProof(diagrammaticProofResponse)
             }
         )

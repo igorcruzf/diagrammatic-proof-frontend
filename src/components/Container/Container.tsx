@@ -32,24 +32,31 @@ export default function Container(){
     const [rightNodeDataArray, setRightNodeDataArray] = useState<NodeToNodeDataDict>({});
     const [rightLinkDataArray, setRightLinkDataArray] = useState<EdgeToLinkDict>({});
     const [diagrammaticProofStates, setDiagrammaticProofStates] = useState<DiagrammaticProofState[]>([]);
-    const [maxIndex, setMaxIndex] = useState<number>(0);
     const [slideValue, setSlideValue] = useState<number>(0);
+    const [leftSlideIndex, setLeftSlideIndex] = useState<number>(0);
+    const [leftSlideValue, setLeftSlideValue] = useState<number>(0);
+    const [rightSlideIndex, setRightSlideIndex] = useState<number>(0);
+    const [rightSlideValue, setRightSlideValue] = useState<number>(0);
     const leftDiagram = customDiagram()
     const rightDiagram = customDiagram()
 
-    function handleDiagramsChange(currentState: DiagrammaticProofState) {
-        setLeftNodeDataArray(currentState.leftDiagram.nodeDict)
-        setLeftLinkDataArray(currentState.leftDiagram.linkDict)
-        setRightNodeDataArray(currentState.rightDiagram.nodeDict)
-        setRightLinkDataArray(currentState.rightDiagram.linkDict)
-        handleLeftDiagramChange(
-            getNodeDataArrayFromDict(currentState.leftDiagram.nodeDict),
-            getLinkDataArrayFromDict(currentState.leftDiagram.linkDict)
-        )
-        handleRightDiagramChange(
-            getNodeDataArrayFromDict(currentState.rightDiagram.nodeDict),
-            getLinkDataArrayFromDict(currentState.rightDiagram.linkDict)
-        )
+    function handleDiagramsChange(currentState: DiagrammaticProofState, direction: String) {
+        if(direction === "LEFT" || direction === "BOTH") {
+            setLeftNodeDataArray(currentState.leftDiagram.nodeDict)
+            setLeftLinkDataArray(currentState.leftDiagram.linkDict)
+            handleLeftDiagramChange(
+                getNodeDataArrayFromDict(currentState.leftDiagram.nodeDict),
+                getLinkDataArrayFromDict(currentState.leftDiagram.linkDict)
+            )
+        }
+        if(direction === "RIGHT" || direction === "BOTH"){
+            setRightNodeDataArray(currentState.rightDiagram.nodeDict)
+            setRightLinkDataArray(currentState.rightDiagram.linkDict)
+            handleRightDiagramChange(
+                getNodeDataArrayFromDict(currentState.rightDiagram.nodeDict),
+                getLinkDataArrayFromDict(currentState.rightDiagram.linkDict)
+            )
+        }
     }
 
     function handleLeftDiagramChange(nodeData: nodeDataEntry[], linkData: linkDataEntry[]) {
@@ -67,8 +74,8 @@ export default function Container(){
     async function initializeDiagrammaticProof(diagrammaticProof: DiagrammaticProofServiceResponse) {
         const leftDiagramsLength = diagrammaticProof.left_diagrammatic_proof.diagrams.length
         const rightDiagramsLength = diagrammaticProof.right_diagrammatic_proof.diagrams.length
-        const maxIndex = leftDiagramsLength > rightDiagramsLength ? leftDiagramsLength-1 : rightDiagramsLength-1
-        setMaxIndex(maxIndex)
+        setLeftSlideIndex(leftDiagramsLength-1)
+        setRightSlideIndex(rightDiagramsLength-1)
 
         const rightDiagram = initializeDiagram(diagrammaticProof.right_diagrammatic_proof.diagrams[0], setRightNodeDataArray, setRightLinkDataArray)
         const leftDiagram = initializeDiagram(diagrammaticProof.left_diagrammatic_proof.diagrams[0], setLeftNodeDataArray, setLeftLinkDataArray)
@@ -79,6 +86,7 @@ export default function Container(){
                 rightDiagram: rightDiagram
             }
         )
+        const maxIndex = leftDiagramsLength > rightDiagramsLength ? leftDiagramsLength-1 : rightDiagramsLength-1
         handleAllStates(maxIndex, diagrammaticProof, currentDiagrammaticProofStates)
     }
 
@@ -152,10 +160,16 @@ export default function Container(){
         return Object.values(linkDict)
     }
 
+    function resetSlidesValue(){
+        setRightSlideValue(0)
+        setLeftSlideValue(0)
+        setSlideValue(0)
+    }
+
     return (
         <div>
             <RelationsInputForm
-                setSlideValue={setSlideValue}
+                resetSlidesValue={resetSlidesValue}
                 setDiagrammaticProof={initializeDiagrammaticProof}
             />
             {
@@ -175,7 +189,13 @@ export default function Container(){
                         setSlideValue={setSlideValue}
                         handleDiagramsChange={handleDiagramsChange}
                         diagrammaticProofStates={diagrammaticProofStates}
-                        maxIndex={maxIndex}/>
+                        leftMaxIndex={leftSlideIndex}
+                        leftSlideValue={leftSlideValue}
+                        setLeftSlideValue={setLeftSlideValue}
+                        rightMaxIndex={rightSlideIndex}
+                        rightSlideValue={rightSlideValue}
+                        setRightSlideValue={setRightSlideValue}
+                    />
                 </div>
             }
 

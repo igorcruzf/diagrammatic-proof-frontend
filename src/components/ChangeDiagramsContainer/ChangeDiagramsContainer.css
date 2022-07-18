@@ -2,10 +2,21 @@
     width: 400px;
 }
 
+#unary-slider-container{
+    display: flex;
+    flex-direction: row;
+    gap: 300px;
+    width: 650px;
+}
+
+.unary-slider{
+    width: 200px;
+}
+
 #change-container{
     display: flex;
     align-items: center;
     justify-items: center;
     justify-content: center;
-    flex-direction: row;
+    flex-direction: column;
 }

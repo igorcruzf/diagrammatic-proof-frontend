@@ -1,0 +1,45 @@
+#relations-input{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 50px;
+}
+
+#subset-eq{
+    margin-left: 50px;
+    padding-bottom: 25px;
+    height: 25px;
+}
+
+.right-input{
+    margin-left: 50px;
+}
+
+input{
+    text-align:center;
+    width: 375px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+}
+
+.submit-button{
+    width: 75px;
+    height: 30px;
+    border-style: solid;
+    background-color: #FBF4FB;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.submit-button:hover{
+    background-color: #ffdbff;
+    transition: 0.3s;
+}

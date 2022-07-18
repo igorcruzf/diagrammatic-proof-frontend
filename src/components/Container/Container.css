@@ -1,0 +1,9 @@
+#diagrams-areas{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 75px;
+    margin-top: 25px;
+}

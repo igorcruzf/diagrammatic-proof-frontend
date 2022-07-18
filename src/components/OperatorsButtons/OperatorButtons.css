@@ -1,0 +1,19 @@
+#operator-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px
+}
+
+.operator{
+    background-color: #FBF4FB;
+    transition: 0.3s;
+    border-radius: 10px;
+    border-style: solid;
+    font-size: 20px;
+}
+
+.operator:hover{
+    background-color: #ffdbff;
+    transition: 0.3s;
+}

@@ -14,6 +14,7 @@ export interface Diagram {
     edges: DiagramEdge[],
     removed_edge?: DiagramEdge,
     created_edges?: DiagramEdge[]
+    created_node?: DiagramNode
 }
 
 interface DiagramNode {

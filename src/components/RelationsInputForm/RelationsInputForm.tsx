@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {calculateDiagrammaticProof} from "../../services/DiagrammaticProofService";
 import "./RelationsInputForm.css"
 import OperatorButtons from "../OperatorsButtons/OperatorButtons";
@@ -12,7 +12,9 @@ export default function RelationsInputForm(props: {
     resetSlidesValue: Function
 }) {
     const [leftDiagramInput, setLeftDiagramInput] = useState<string>("(A" + composition + "B)" + inverse);
+    const leftInputRef = useRef<HTMLInputElement>(null);
     const [rightDiagramInput, setRightDiagramInput] = useState<string>("A" + intersection + "B");
+    const rightInputRef = useRef<HTMLInputElement>(null);
 
     function handleLeftDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
         setLeftDiagramInput(event.currentTarget.value);
@@ -51,8 +53,8 @@ export default function RelationsInputForm(props: {
         <form className={'form'} onSubmit={handleSubmit}>
             <div id={"relations-input"}>
                 <div>
-                    <input type="text" value={leftDiagramInput} onChange={handleLeftDiagramInputChange} />
-                    <OperatorButtons input={leftDiagramInput} setInput={setLeftDiagramInput}/>
+                    <input type="text" value={leftDiagramInput} ref={leftInputRef} onChange={handleLeftDiagramInputChange} />
+                    <OperatorButtons input={leftDiagramInput} setInput={setLeftDiagramInput} inputRef={leftInputRef}/>
                 </div>
                 <div className={"subset-n-invert"}>
                     <img id={'subset-eq'} src='images/subseteq.png' alt="Subset equals"/>
@@ -61,8 +63,8 @@ export default function RelationsInputForm(props: {
                     </button>
                 </div>
                 <div className={"right-input"}>
-                    <input type="text" value={rightDiagramInput} onChange={handleRightDiagramInputChange} />
-                    <OperatorButtons input={rightDiagramInput} setInput={setRightDiagramInput}/>
+                    <input type="text" value={rightDiagramInput} ref={rightInputRef} onChange={handleRightDiagramInputChange} />
+                    <OperatorButtons input={rightDiagramInput} setInput={setRightDiagramInput} inputRef={rightInputRef}/>
                 </div>
             </div>
             <input className={'submit-button'} type="submit" value="Submit" />

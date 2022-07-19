@@ -41,12 +41,36 @@ export default function Container(){
     const [rightSlideValue, setRightSlideValue] = useState<number>(0);
     const [leftFeedbackMessage, setLeftFeedbackMessage] = useState<string>("")
     const [rightFeedbackMessage, setRightFeedbackMessage] = useState<string>("")
+    const [homomorphismFeedbackMessage, setHomomorphismFeedbackMessage] = useState<string>("")
+    const [isHomomorphic, setIsHomomorphic] = useState<boolean>(false)
 
 
     const leftDiagram = customDiagram()
     const rightDiagram = customDiagram()
 
+    function handleHomomorphismFeedbackMessage(){
+        const maxSlideValue = leftSlideMaxIndex > rightSlideMaxIndex? leftSlideMaxIndex : rightSlideMaxIndex
+        if(slideValue === maxSlideValue || (leftSlideValue === leftSlideMaxIndex &&
+            rightSlideValue === rightSlideMaxIndex )) {
+            if(isHomomorphic){
+                const text = document.getElementById('validation-text')!
+                text.classList.add('valid-text')
+                text.classList.remove('invalid-text')
+                setHomomorphismFeedbackMessage("Yes")
+            } else {
+                const text = document.getElementById('validation-text')!
+                text.classList.remove('valid-text')
+                text.classList.add('invalid-text')
+                setHomomorphismFeedbackMessage("No")
+            }
+
+        } else {
+            setHomomorphismFeedbackMessage("")
+        }
+    }
+
     function handleDiagramsChange(currentState: DiagrammaticProofState, direction: String) {
+        handleHomomorphismFeedbackMessage()
         if(direction === "LEFT" || direction === "BOTH") {
             setLeftFeedbackMessage(currentState.leftDiagram.feedBackMessage)
             setLeftNodeDataArray(currentState.leftDiagram.nodeDict)
@@ -80,8 +104,10 @@ export default function Container(){
     }
 
     async function initializeDiagrammaticProof(diagrammaticProof: DiagrammaticProofServiceResponse) {
+        setHomomorphismFeedbackMessage("")
         const leftDiagramsLength = diagrammaticProof.left_diagrammatic_proof.diagrams.length
         const rightDiagramsLength = diagrammaticProof.right_diagrammatic_proof.diagrams.length
+        setIsHomomorphic(diagrammaticProof.homomorphic)
         setLeftSlideMaxIndex(diagrammaticProof.homomorphic? leftDiagramsLength : leftDiagramsLength-1)
         setRightSlideMaxIndex(diagrammaticProof.homomorphic? rightDiagramsLength : rightDiagramsLength-1)
 
@@ -203,10 +229,18 @@ export default function Container(){
 
     return (
         <div>
-            <RelationsInputForm
-                resetSlidesValue={resetSlidesValue}
-                setDiagrammaticProof={initializeDiagrammaticProof}
-            />
+            <div id={'input-container'}>
+                <RelationsInputForm
+                    resetSlidesValue={resetSlidesValue}
+                    setDiagrammaticProof={initializeDiagrammaticProof}
+                />
+                <div id={'interrogation-text'}>
+                    ?
+                </div>
+                <div id={'validation-text'} className={'invalid-text'}>
+                    {homomorphismFeedbackMessage}
+                </div>
+            </div>
             {
                 diagrammaticProofStates.length !== 0 &&
                 <div>

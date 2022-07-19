@@ -12,7 +12,7 @@ export function calculateDiagrammaticProof(expression: string): Promise<Diagramm
             if(data.ok){
                 return data.json()
             } else {
-                alert("Erro na chamada ao back! Tente adicionar parênteses ao redor de cada operação")
+                alert("Error in one or both inputs, try adding parentheses around each term.")
             }
         }
     )

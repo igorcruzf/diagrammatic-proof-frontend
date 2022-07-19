@@ -17,11 +17,11 @@ export default function RelationsInputForm(props: {
     const rightInputRef = useRef<HTMLInputElement>(null);
 
     function handleLeftDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
-        setLeftDiagramInput(event.currentTarget.value);
+        setLeftDiagramInput(transformToInput(event.currentTarget.value));
     }
 
     function handleRightDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
-        setRightDiagramInput(event.currentTarget.value);
+        setRightDiagramInput(transformToInput(event.currentTarget.value));
     }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -34,6 +34,13 @@ export default function RelationsInputForm(props: {
                 props.setDiagrammaticProof(diagrammaticProofResponse)
             }
         )
+    }
+
+    function transformToInput(inputValue: string){
+        return inputValue
+            .replaceAll(";", composition)
+            .replaceAll("*", intersection)
+            .replaceAll("-", inverse)
     }
 
     function transformInput(input: string){

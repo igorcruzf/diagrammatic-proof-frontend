@@ -23,6 +23,8 @@ export default function OperatorButtons(props: {
     }
 
     return <div id={'operator-buttons'}>
+        <button type='button' className={'operator'} onClick={() => onClickHandler("(")}>{"("}</button>
+        <button type='button' className={'operator'} onClick={() => onClickHandler(")")}>{")"}</button>
         <button type='button' className={'operator'} onClick={() => onClickHandler(intersection)}>{intersection}</button>
         <button type='button' className={'operator'} onClick={() => onClickHandler(composition)}>{composition}</button>
         <button type='button' className={'operator'} onClick={() => onClickHandler(inverse)}>{inverse}</button>

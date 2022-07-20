@@ -39,8 +39,8 @@ export default function RelationsInputForm(props: {
     function transformToInput(inputValue: string){
         return inputValue
             .replaceAll(";", composition)
-            .replaceAll("*", intersection)
-            .replaceAll("-", inverse)
+            .replaceAll(".", intersection)
+            .replaceAll(",", inverse)
     }
 
     function transformInput(input: string){

@@ -48,8 +48,9 @@ export function customDiagram() {
     diagram.linkTemplate =
         $(go.Link,  // the whole link panel
             {
+                // routing: go.Link.AvoidsNodes,
                 curve: go.Link.Bezier,
-                adjusting: go.Link.Stretch,
+                // adjusting: go.Link.Stretch,
                 reshapable: true, relinkableFrom: false, relinkableTo: false,
                 fromShortLength: 4
             },
@@ -84,7 +85,6 @@ export function customDiagram() {
         );
 
     diagram.contentAlignment = go.Spot.Center
-    diagram.layout = new go.ForceDirectedLayout();
 
     return diagram;
 }

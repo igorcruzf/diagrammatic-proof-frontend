@@ -63,7 +63,6 @@ export default function Container(){
                 text.classList.add('invalid-text')
                 setHomomorphismFeedbackMessage("No")
             }
-
         } else {
             setHomomorphismFeedbackMessage("")
         }

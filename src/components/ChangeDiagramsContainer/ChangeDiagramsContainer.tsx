@@ -14,8 +14,14 @@ export default function ChangeDiagramsContainer(props: {
     rightSlideValue: number
     setRightSlideValue: Function
 }){
+    const maxSlideValue = props.leftMaxIndex > props.rightMaxIndex? props.leftMaxIndex : props.rightMaxIndex
 
     function changeDiagrams(currentIndex: number, direction: string){
+        if(direction === "LEFT" && currentIndex === props.leftMaxIndex){
+            currentIndex = maxSlideValue
+        } else if(direction === "RIGHT" && currentIndex === props.rightMaxIndex){
+            currentIndex = maxSlideValue
+        }
         props.handleDiagramsChange(props.diagrammaticProofStates[currentIndex], direction)
     }
 
@@ -82,7 +88,7 @@ export default function ChangeDiagramsContainer(props: {
                 step={1}
                 marks
                 min={0}
-                max={props.leftMaxIndex > props.rightMaxIndex? props.leftMaxIndex : props.rightMaxIndex}
+                max={maxSlideValue}
                 color="secondary"
                 onChange={ (event, value) => {
                         // @ts-ignore

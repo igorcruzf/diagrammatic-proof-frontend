@@ -22,7 +22,7 @@ export default function ChangeDiagramsContainer(props: {
         } else if(direction === "RIGHT" && currentIndex === props.rightMaxIndex){
             currentIndex = maxSlideValue
         }
-        props.handleDiagramsChange(props.diagrammaticProofStates[currentIndex], direction)
+        props.handleDiagramsChange(currentIndex, direction)
     }
 
     function setUnarySlidesValue(value: number){
@@ -52,9 +52,9 @@ export default function ChangeDiagramsContainer(props: {
                     max={props.leftMaxIndex}
                     color="secondary"
                     onChange={ (event, value) => {
+                        props.setLeftSlideValue(value)
                         // @ts-ignore
                         changeDiagrams(value, "LEFT")
-                        props.setLeftSlideValue(value)
                     }
                     }
                 />
@@ -71,9 +71,9 @@ export default function ChangeDiagramsContainer(props: {
                     max={props.rightMaxIndex}
                     color="secondary"
                     onChange={ (event, value) => {
+                        props.setRightSlideValue(value)
                         // @ts-ignore
                         changeDiagrams(value, "RIGHT")
-                        props.setRightSlideValue(value)
                     }
                     }
                 />
@@ -91,11 +91,11 @@ export default function ChangeDiagramsContainer(props: {
                 max={maxSlideValue}
                 color="secondary"
                 onChange={ (event, value) => {
-                        // @ts-ignore
-                        changeDiagrams(value, "BOTH")
                         props.setSlideValue(value)
                         // @ts-ignore
                         setUnarySlidesValue(value)
+                        // @ts-ignore
+                        changeDiagrams(value, "BOTH")
                     }
                 }
             />

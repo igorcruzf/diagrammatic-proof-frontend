@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {RefObject, useRef, useState} from "react";
 import {calculateDiagrammaticProof} from "../../services/DiagrammaticProofService";
 import "./RelationsInputForm.css"
 import OperatorButtons from "../OperatorsButtons/OperatorButtons";
@@ -16,12 +16,12 @@ export default function RelationsInputForm(props: {
     const [rightDiagramInput, setRightDiagramInput] = useState<string>("A" + intersection + "B");
     const rightInputRef = useRef<HTMLInputElement>(null);
 
-    function handleLeftDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
-        setLeftDiagramInput(transformToInput(event.currentTarget.value));
+    async function handleLeftDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
+        await handleSetInputValue(event.currentTarget.value, leftInputRef, setLeftDiagramInput);
     }
 
-    function handleRightDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
-        setRightDiagramInput(transformToInput(event.currentTarget.value));
+    async function handleRightDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
+        await handleSetInputValue(event.currentTarget.value, rightInputRef, setRightDiagramInput);
     }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -36,11 +36,21 @@ export default function RelationsInputForm(props: {
         )
     }
 
-    function transformToInput(inputValue: string){
-        return inputValue
-            .replaceAll(";", composition)
+    async function handleSetInputValue(inputValue: string, inputRef: RefObject<HTMLInputElement>, setInputValue: Function) {
+        let value = inputRef.current?.selectionStart
+
+        let operationLength = 0
+        if(inputValue.includes(",")) {
+            operationLength = (inputValue.match(/,/g) || []).length
+        }
+        const newInputValue = inputValue.replaceAll(";", composition)
             .replaceAll(".", intersection)
             .replaceAll(",", inverse)
+
+        setInputValue(newInputValue)
+        await inputRef.current?.focus()
+
+        inputRef.current?.setSelectionRange(value!! + operationLength, value!! + operationLength)
     }
 
     function transformInput(input: string){

@@ -48,10 +48,8 @@ export default function Container(){
     const leftDiagram = customDiagram()
     const rightDiagram = customDiagram()
 
-    function handleHomomorphismFeedbackMessage(){
-        const maxSlideValue = leftSlideMaxIndex > rightSlideMaxIndex? leftSlideMaxIndex : rightSlideMaxIndex
-        if(slideValue === maxSlideValue || (leftSlideValue === leftSlideMaxIndex &&
-            rightSlideValue === rightSlideMaxIndex )) {
+    function handleHomomorphismFeedbackMessage(currentStateIndex: number){
+        if(currentStateIndex === diagrammaticProofStates.length-1) {
             if(isHomomorphic){
                 const text = document.getElementById('validation-text')!
                 text.classList.add('valid-text')
@@ -68,8 +66,9 @@ export default function Container(){
         }
     }
 
-    function handleDiagramsChange(currentState: DiagrammaticProofState, direction: String) {
-        handleHomomorphismFeedbackMessage()
+    function handleDiagramsChange(currentStateIndex: number, direction: String) {
+        const currentState = diagrammaticProofStates[currentStateIndex]
+        handleHomomorphismFeedbackMessage(currentStateIndex)
         if(direction === "LEFT" || direction === "BOTH") {
             setLeftFeedbackMessage(currentState.leftDiagram.feedBackMessage)
             setLeftNodeDataArray(currentState.leftDiagram.nodeDict)

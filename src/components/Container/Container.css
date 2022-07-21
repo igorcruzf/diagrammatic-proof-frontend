@@ -61,6 +61,14 @@
 }
 
 @media (max-width:700px) {
+    #content-container{
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
     #diagrams-areas{
         display: flex;
         align-items: center;
@@ -79,7 +87,7 @@
         display: flex;
         margin-top: -50px;
         flex-direction: row;
-        margin-left: 140px;
+        margin-left: 0;
         align-items: center;
         justify-items: center;
         justify-content: center;
@@ -94,7 +102,6 @@
 
     #validation-text{
         margin-bottom: 15px;
-        margin-right: 125px;
         font-weight: bold;
         font-size: 15px;
         width: inherit;

@@ -226,7 +226,7 @@ export default function Container(){
     }
 
     return (
-        <div>
+        <div id={'content-container'}>
             <div id={'input-container'}>
                 <RelationsInputForm
                     resetSlidesValue={resetSlidesValue}

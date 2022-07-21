@@ -17,3 +17,9 @@
     background-color: #ffdbff;
     transition: 0.3s;
 }
+
+@media (max-width:1070px) {
+    .operator{
+        font-size: 10px;
+    }
+}

@@ -25,3 +25,15 @@
     font-weight: bold;
     font-family: sans-serif;
 }
+
+@media (max-width:1070px) {
+    #menu-buttons-container{
+        display: flex;
+        width: 100px;
+        flex-direction: row;
+        gap: 25px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-right: 100px;
+    }
+}

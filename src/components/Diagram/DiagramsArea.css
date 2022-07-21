@@ -4,3 +4,13 @@
     border: solid 1px #C1C1C1;
     background-color: white;
 }
+
+
+@media (max-width:1070px) {
+    .diagram-component {
+        width: 300px;
+        height: 300px;
+        border: solid 1px #C1C1C1;
+        background-color: white;
+    }
+}

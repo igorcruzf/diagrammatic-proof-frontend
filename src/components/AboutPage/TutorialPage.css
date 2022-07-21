@@ -28,3 +28,15 @@
     font-size: 15px;
     text-align: center;
 }
+
+@media (max-width:1070px) {
+
+    #table-note{
+        font-size: 11px;
+    }
+
+    #tutorial-page{
+        width: 400px;
+        font-size: 15px;
+    }
+}

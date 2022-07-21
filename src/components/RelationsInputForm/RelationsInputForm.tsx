@@ -2,6 +2,7 @@ import React, {RefObject, useRef, useState} from "react";
 import {calculateDiagrammaticProof} from "../../services/DiagrammaticProofService";
 import "./RelationsInputForm.css"
 import OperatorButtons from "../OperatorsButtons/OperatorButtons";
+import {LinearProgress} from "@mui/material";
 
 export const composition = "ο"
 export const intersection = "∩"
@@ -11,10 +12,11 @@ export default function RelationsInputForm(props: {
     setDiagrammaticProof: Function,
     resetSlidesValue: Function
 }) {
-    const [leftDiagramInput, setLeftDiagramInput] = useState<string>("(A" + composition + "B)" + inverse);
+    const [leftDiagramInput, setLeftDiagramInput] = useState<string>(`(A ${intersection} (B${inverse})) ${composition} C`);
     const leftInputRef = useRef<HTMLInputElement>(null);
-    const [rightDiagramInput, setRightDiagramInput] = useState<string>("A" + intersection + "B");
+    const [rightDiagramInput, setRightDiagramInput] = useState<string>(`(A ${composition} C) ${intersection} ((B${inverse}) ${composition} C)`);
     const rightInputRef = useRef<HTMLInputElement>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     async function handleLeftDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
         await handleSetInputValue(event.currentTarget.value, leftInputRef, setLeftDiagramInput);
@@ -28,8 +30,10 @@ export default function RelationsInputForm(props: {
         event.preventDefault()
         const leftInput = transformInput(leftDiagramInput)
         const rightInput = transformInput(rightDiagramInput)
+        setIsLoading(true)
         calculateDiagrammaticProof(leftInput + "inc" + rightInput).then(
             diagrammaticProofResponse => {
+                setIsLoading(false)
                 props.resetSlidesValue()
                 props.setDiagrammaticProof(diagrammaticProofResponse)
             }
@@ -85,6 +89,9 @@ export default function RelationsInputForm(props: {
                 </div>
             </div>
             <input className={'submit-button'} type="submit" value="Submit" />
+            <div className={'linear-progress'}>
+                {isLoading && <LinearProgress color="secondary" />}
+            </div>
         </form>
     );
 }

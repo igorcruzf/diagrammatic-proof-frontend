@@ -102,6 +102,7 @@
 
     #validation-text{
         margin-bottom: 15px;
+        margin-right: 0;
         font-weight: bold;
         font-size: 15px;
         width: inherit;

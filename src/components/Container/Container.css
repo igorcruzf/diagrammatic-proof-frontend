@@ -10,6 +10,7 @@
 
 #input-container{
     display: flex;
+    margin-top: -50px;
     flex-direction: row;
     margin-left: 140px;
     align-items: center;

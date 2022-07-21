@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import DiagramsArea, {linkDataEntry, nodeDataEntry} from "../Diagram/DiagramsArea";
 import {customDiagram} from "../Diagram/GoCustomDiagram";
 import RelationsInputForm from "../RelationsInputForm/RelationsInputForm";

@@ -65,7 +65,7 @@ export default function TutorialPage() {
                     the right, there will be a node on the left with the same color, representing its "image" in this homomorphism.
                 </div>
                 <div>
-                    It's possible for a node on the left to keep the color if there is no node in the diagram
+                    It's possible for a node on the left to keep the color black if there is no node in the diagram
                     on the right that has it as an image. It's also possible for a node on the right to have the same color
                     as another node on the right if both of them have the same image on the left.
                 </div>

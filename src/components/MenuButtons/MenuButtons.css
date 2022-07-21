@@ -29,14 +29,9 @@
 
 @media (max-width:700px) {
     #navbar{
-        /*width: 800px;*/
         align-items: center;
         justify-items: center;
         justify-content: center;
-    }
-
-    #divider{
-        width: 800px;
     }
 
     #menu-buttons-container{

@@ -12,7 +12,7 @@
     align-items: center;
     justify-items: center;
     width: 800px;
-    text-align: left;
+    text-align: justify;
     font-size: 20px;
     color: #9b8b9b;
     font-weight: bold;
@@ -35,8 +35,12 @@
         font-size: 11px;
     }
 
+    #operation-table{
+        width: 360px;
+    }
+
     #tutorial-page{
-        width: 400px;
+        width: 360px;
         font-size: 15px;
     }
 }

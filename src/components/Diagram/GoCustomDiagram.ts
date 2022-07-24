@@ -21,17 +21,41 @@ export function customDiagram() {
             $(go.Shape, 'Circle',
                 { name: 'SHAPE', fill: 'white', strokeWidth: 0, maxSize: new go.Size(15, 15) },
                 // Shape.fill is bound to Node.data.color
-                new go.Binding('fill', 'color'))
+                new go.Binding('fill', 'color')),
+            $(go.TextBlock, "",  // the label text
+                {
+                    textAlign: "center",
+                    font: "9pt helvetica, arial, sans-serif",
+                    margin: 4,
+                    editable: false,  // enable in-place editing,
+                    maxSize: new go.Size(100, NaN),
+                    maxLines: 1, overflow: go.TextBlock.OverflowEllipsis,
+                    stroke: "white"
+                },
+                // editing the text automatically updates the model data
+                new go.Binding("text").makeTwoWay())
         );
 
     diagram.nodeTemplateMap.add("Start",
         $(go.Node, 'Auto',
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
             $(go.Shape, 'TriangleRight',
-                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 0, maxSize: new go.Size(15, 15) },
+                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 0, minSize: new go.Size(20, 20), maxSize: new go.Size(20, 20) },
                 // Shape.fill is bound to Node.data.color
                 new go.Binding('fill', 'color')
             ),
+            $(go.TextBlock, "",  // the label text
+                {
+                    textAlign: "center",
+                    font: "8.5pt helvetica, arial, sans-serif",
+                    margin: 4,
+                    editable: false,  // enable in-place editing,
+                    maxSize: new go.Size(150, NaN),
+                    maxLines: 1, overflow: go.TextBlock.OverflowEllipsis,
+                    stroke: "white"
+                },
+                // editing the text automatically updates the model data
+                new go.Binding("text").makeTwoWay())
         )
     );
 
@@ -39,9 +63,21 @@ export function customDiagram() {
         $(go.Node, 'Auto',
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
             $(go.Shape, 'None',
-                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 0, maxSize: new go.Size(15, 15) },
+                { name: 'SHAPE', fill: 'white', margin:5, strokeWidth: 0, minSize: new go.Size(15, 15), maxSize: new go.Size(15, 15) },
                 // Shape.fill is bound to Node.data.color
-                new go.Binding('fill', 'color'))
+                new go.Binding('fill', 'color')),
+            $(go.TextBlock, "",  // the label text
+                {
+                    textAlign: "center",
+                    font: "9pt helvetica, arial, sans-serif",
+                    margin: 4,
+                    editable: false,  // enable in-place editing,
+                    maxSize: new go.Size(150, NaN),
+                    maxLines: 1, overflow: go.TextBlock.OverflowEllipsis,
+                    stroke: "white"
+                },
+                // editing the text automatically updates the model data
+                new go.Binding("text").makeTwoWay())
         )
     );
 

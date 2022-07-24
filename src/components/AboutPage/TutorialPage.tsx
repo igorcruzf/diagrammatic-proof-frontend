@@ -65,6 +65,10 @@ export default function TutorialPage() {
                     the right, there will be a node on the left with the same color, representing its "image" in this homomorphism.
                 </div>
                 <div>
+                    If it's not a valid inclusion, the last state in the left diagram will show a unique number for each node and
+                    a countermodel proving that the inclusion is not valid will appears below the diagrams, using these numbers to compose the variables in a universe.
+                </div>
+                <div>
                     It's possible for a node on the left to keep the color black if there is no node in the diagram
                     on the right that has it as an image. It's also possible for a node on the right to have the same color
                     as another node on the right if both of them have the same image on the left.

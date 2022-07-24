@@ -4,8 +4,8 @@ import {EdgeToLinkDict, NodeToNodeDataDict} from "./Container";
 
 export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict: NodeToNodeDataDict; linkDict: EdgeToLinkDict }) {
     const newNodeKey = Math.random()
-    const locLeft = newDiagramStates.nodeDict[diagram.created_edges!![0].left_node.name].loc.split(" ")
-    const locRight = newDiagramStates.nodeDict[diagram.created_edges!![1].right_node.name].loc.split(" ")
+    const locLeft = newDiagramStates.nodeDict[diagram.created_edges![0].left_node.name].loc.split(" ")
+    const locRight = newDiagramStates.nodeDict[diagram.created_edges![1].right_node.name].loc.split(" ")
     const loc = +locRight[0] > +locLeft[0]? locRight : locLeft
 
     if(Math.abs((+locRight[0] - +locLeft[0])) <= 100) {
@@ -15,29 +15,29 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
         newDiagramStates.nodeDict = moveNodesVertically(newDiagramStates.nodeDict, +loc[1])
     }
 
-    newDiagramStates.nodeDict[diagram.created_node!!.name] =
+    newDiagramStates.nodeDict[diagram.created_node!.name] =
         {key: newNodeKey, color: 'black', loc: `${+loc[0]} ${+loc[1]-20}`}
 
-    const firstEdgeFromNodeKey = newDiagramStates.nodeDict[diagram.created_edges!![0].left_node.name].key
-    const firstEdgeToNodeKey = newDiagramStates.nodeDict[diagram.created_edges!![0].right_node.name].key
+    const firstEdgeFromNodeKey = newDiagramStates.nodeDict[diagram.created_edges![0].left_node.name].key
+    const firstEdgeToNodeKey = newDiagramStates.nodeDict[diagram.created_edges![0].right_node.name].key
 
-    const secondEdgeFromNodeKey = newDiagramStates.nodeDict[diagram.created_edges!![1].left_node.name].key
-    const secondEdgeToNodeKey = newDiagramStates.nodeDict[diagram.created_edges!![1].right_node.name].key
+    const secondEdgeFromNodeKey = newDiagramStates.nodeDict[diagram.created_edges![1].left_node.name].key
+    const secondEdgeToNodeKey = newDiagramStates.nodeDict[diagram.created_edges![1].right_node.name].key
 
-    newDiagramStates.linkDict[diagram.created_edges!![0].id] =
+    newDiagramStates.linkDict[diagram.created_edges![0].id] =
         {key: -Math.random(),
             from: firstEdgeFromNodeKey,
             to: firstEdgeToNodeKey,
-            text: flattenEdgeLabels(diagram.created_edges!![0])
+            text: flattenEdgeLabels(diagram.created_edges![0])
         }
-    newDiagramStates.linkDict[diagram.created_edges!![1].id] =
+    newDiagramStates.linkDict[diagram.created_edges![1].id] =
         {key: -Math.random(),
             from: secondEdgeFromNodeKey,
             to: secondEdgeToNodeKey,
-            text: flattenEdgeLabels(diagram.created_edges!![1])
+            text: flattenEdgeLabels(diagram.created_edges![1])
         }
 
-    delete newDiagramStates.linkDict[diagram.removed_edge!!.id]
+    delete newDiagramStates.linkDict[diagram.removed_edge!.id]
 
     function moveAllNodes(nodeDict: NodeToNodeDataDict, minLoc: number, minVerticalLoc: number){
         for(let key in nodeDict){
@@ -70,21 +70,21 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
 }
 
 export function removeIntersection(newDiagramStates: { nodeDict: NodeToNodeDataDict; linkDict: EdgeToLinkDict }, diagram: Diagram) {
-    const leftLink = newDiagramStates.linkDict[diagram!!.removed_edge!!.id]
-    const leftEdge = flattenEdgeLabels(diagram!!.created_edges!![0])
-    const rightEdge = flattenEdgeLabels(diagram!!.created_edges!![1])
-    newDiagramStates.linkDict[diagram!!.created_edges!![0].id] =
+    const leftLink = newDiagramStates.linkDict[diagram!.removed_edge!.id]
+    const leftEdge = flattenEdgeLabels(diagram!.created_edges![0])
+    const rightEdge = flattenEdgeLabels(diagram!.created_edges![1])
+    newDiagramStates.linkDict[diagram!.created_edges![0].id] =
         {key: -Math.random(), from: leftLink.from, to: leftLink.to, text: leftEdge}
-    newDiagramStates.linkDict[diagram!!.created_edges!![1].id] =
+    newDiagramStates.linkDict[diagram!.created_edges![1].id] =
         {key: -Math.random(), from: leftLink.from, to: leftLink.to, text: rightEdge}
-    delete newDiagramStates.linkDict[diagram!!.removed_edge!!.id]
+    delete newDiagramStates.linkDict[diagram!.removed_edge!.id]
 }
 
 export function removeInverse(newDiagramStates: { nodeDict: NodeToNodeDataDict; linkDict: EdgeToLinkDict }, diagram: Diagram) {
-    const link = newDiagramStates.linkDict[diagram!!.removed_edge!!.id]
-    const newEdge = flattenEdgeLabels(diagram!!.created_edges!![0])
-    newDiagramStates.linkDict[diagram!!.created_edges!![0].id] =
+    const link = newDiagramStates.linkDict[diagram!.removed_edge!.id]
+    const newEdge = flattenEdgeLabels(diagram!.created_edges![0])
+    newDiagramStates.linkDict[diagram!.created_edges![0].id] =
         {key: link.key, from: link.to, to: link.from, text: newEdge}
-    delete newDiagramStates.linkDict[diagram!!.removed_edge!!.id]
+    delete newDiagramStates.linkDict[diagram!.removed_edge!.id]
 
 }

@@ -19,7 +19,7 @@ export default function OperatorButtons(props: {
         }
         props.setInput(input)
         await props.inputRef.current?.focus()
-        props.inputRef.current?.setSelectionRange(value!!+operation.length, value!!+operation.length)
+        props.inputRef.current?.setSelectionRange(value!+operation.length, value!+operation.length)
     }
 
     return <div id={'operator-buttons'}>

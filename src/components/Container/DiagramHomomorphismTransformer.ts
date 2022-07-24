@@ -9,15 +9,15 @@ export default function createHomomorphicState(diagrammaticProof: DiagrammaticPr
 
     let index = 0
     for(let key in newRightStates.nodeDict){
-        const node = diagrammaticProof.right_diagrammatic_proof.diagrams.at(-1)!!.nodes.find(node =>
+        const node = diagrammaticProof.right_diagrammatic_proof.diagrams.at(-1)!.nodes.find(node =>
             node.name === key
-        )!!
+        )!
 
-        if(newLeftStates.nodeDict[node.image_name!!].color !== "black") {
-            newRightStates.nodeDict[key].color = newLeftStates.nodeDict[node.image_name!!].color
+        if(newLeftStates.nodeDict[node.image_name!].color !== "black") {
+            newRightStates.nodeDict[key].color = newLeftStates.nodeDict[node.image_name!].color
         } else {
             newRightStates.nodeDict[key].color = colorList[index]
-            newLeftStates.nodeDict[node.image_name!!].color = colorList[index]
+            newLeftStates.nodeDict[node.image_name!].color = colorList[index]
             index+=1
         }
 
@@ -33,6 +33,20 @@ export default function createHomomorphicState(diagrammaticProof: DiagrammaticPr
     }
 }
 
+
+export function createNonHomomorphicState(diagrammaticProof: DiagrammaticProofServiceResponse,
+                                               diagrammaticProofState: DiagrammaticProofState
+) {
+    const newLeftStates = structuredClone(diagrammaticProofState.leftDiagram)
+
+    for(let key in newLeftStates.nodeDict){
+        newLeftStates.nodeDict[key].text = diagrammaticProof.countermodel.universe[key]
+    }
+    return {
+        leftDiagram: newLeftStates,
+        rightDiagram: diagrammaticProofState.rightDiagram
+    }
+}
 export const colorList = [
     "Blue",
     "Red",

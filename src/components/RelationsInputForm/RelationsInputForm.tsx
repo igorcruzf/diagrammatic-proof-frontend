@@ -8,6 +8,13 @@ export const composition = "ο"
 export const intersection = "∩"
 export const inverse = "⁻¹"
 
+export function transformInputToSymbol(input: string){
+    return input
+        .replaceAll("comp", composition)
+        .replaceAll("int", intersection)
+        .replaceAll("inv", inverse)
+}
+
 export default function RelationsInputForm(props: {
     setDiagrammaticProof: Function,
     resetSlidesValue: Function
@@ -54,7 +61,7 @@ export default function RelationsInputForm(props: {
         setInputValue(newInputValue)
         await inputRef.current?.focus()
 
-        inputRef.current?.setSelectionRange(value!! + operationLength, value!! + operationLength)
+        inputRef.current?.setSelectionRange(value! + operationLength, value! + operationLength)
     }
 
     function transformInput(input: string){

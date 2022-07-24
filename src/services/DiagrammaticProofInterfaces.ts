@@ -1,7 +1,27 @@
+
 export interface DiagrammaticProofServiceResponse {
     left_diagrammatic_proof: DiagrammaticProof,
     right_diagrammatic_proof: DiagrammaticProof,
-    homomorphic: boolean
+    countermodel: Countermodel
+}
+
+interface Countermodel{
+    homomorphic: boolean,
+    universe: UniverseDict,
+    relations: RelationsDict
+}
+
+export interface RelationsDict{
+    [label: string]: Pair[];
+}
+
+export interface Pair{
+    first: number,
+    second: number
+}
+
+export interface UniverseDict{
+    [node: string]: number;
 }
 
 export interface DiagrammaticProof {
@@ -15,6 +35,7 @@ export interface Diagram {
     removed_edge?: DiagramEdge,
     created_edges?: DiagramEdge[]
     created_node?: DiagramNode
+    countermodel_relations: RelationsDict
 }
 
 interface DiagramNode {

@@ -7,7 +7,8 @@ import {Diagram, DiagrammaticProofServiceResponse} from "../../services/Diagramm
 import ChangeDiagramsContainer from "../ChangeDiagramsContainer/ChangeDiagramsContainer";
 import {flattenEdgeLabels} from "../../services/FlattenEdge";
 import {removeComposition, removeIntersection, removeInverse} from "./DiagramOperationTransformer";
-import createHomomorphicState from "./DiagramHomomorphismTransformer";
+import createHomomorphicState, {createNonHomomorphicState} from "./DiagramHomomorphismTransformer";
+import Countermodel from "../Countermodel/Countermodel";
 
 export interface EdgeToLinkDict {
     [edge_id: string]: linkDataEntry;
@@ -43,6 +44,7 @@ export default function Container(){
     const [rightFeedbackMessage, setRightFeedbackMessage] = useState<string>("")
     const [homomorphismFeedbackMessage, setHomomorphismFeedbackMessage] = useState<string>("")
     const [isHomomorphic, setIsHomomorphic] = useState<boolean>(false)
+    const [diagrammaticProofResponse, setDiagrammaticProofResponse] = useState<DiagrammaticProofServiceResponse>()
 
 
     const leftDiagram = customDiagram()
@@ -102,12 +104,13 @@ export default function Container(){
     }
 
     async function initializeDiagrammaticProof(diagrammaticProof: DiagrammaticProofServiceResponse) {
+        setDiagrammaticProofResponse(diagrammaticProof)
         setHomomorphismFeedbackMessage("")
         const leftDiagramsLength = diagrammaticProof.left_diagrammatic_proof.diagrams.length
         const rightDiagramsLength = diagrammaticProof.right_diagrammatic_proof.diagrams.length
-        setIsHomomorphic(diagrammaticProof.homomorphic)
-        setLeftSlideMaxIndex(diagrammaticProof.homomorphic? leftDiagramsLength : leftDiagramsLength-1)
-        setRightSlideMaxIndex(diagrammaticProof.homomorphic? rightDiagramsLength : rightDiagramsLength-1)
+        setIsHomomorphic(diagrammaticProof.countermodel.homomorphic)
+        setLeftSlideMaxIndex(leftDiagramsLength)
+        setRightSlideMaxIndex(rightDiagramsLength)
 
         const rightDiagram = initializeDiagram(diagrammaticProof.right_diagrammatic_proof.diagrams[0], setRightNodeDataArray, setRightLinkDataArray)
         const leftDiagram = initializeDiagram(diagrammaticProof.left_diagrammatic_proof.diagrams[0], setLeftNodeDataArray, setLeftLinkDataArray)
@@ -139,11 +142,14 @@ export default function Container(){
                 rightDiagram: rightNewState
             })
         }
-        if(diagrammaticProof.homomorphic){
+        if(diagrammaticProof.countermodel.homomorphic){
             diagrammaticProofStates.push(
-                createHomomorphicState(diagrammaticProof, diagrammaticProofStates.at(-1)!!)
+                createHomomorphicState(diagrammaticProof, diagrammaticProofStates.at(-1)!)
             )
-
+        }else {
+            diagrammaticProofStates.push(
+                createNonHomomorphicState(diagrammaticProof, diagrammaticProofStates.at(-1)!)
+            )
         }
         setDiagrammaticProofStates(diagrammaticProofStates)
     }
@@ -169,12 +175,12 @@ export default function Container(){
         const newDiagramStates = {...diagramStates}
         newDiagramStates.linkDict = {...diagramStates.linkDict}
         newDiagramStates.nodeDict = {...diagramStates.nodeDict}
-        switch (diagram!!.step_description) {
+        switch (diagram!.step_description) {
             case "REMOVE_INVERSE":
                 removeInverse(newDiagramStates, diagram);
                 break
             case "REMOVE_COMPOSITION":
-                removeComposition(diagram!!, newDiagramStates);
+                removeComposition(diagram!, newDiagramStates);
                 break
             case "REMOVE_INTERSECTION":
                 removeIntersection(newDiagramStates, diagram);
@@ -183,13 +189,13 @@ export default function Container(){
                 break
         }
         newDiagramStates.feedBackMessage = convertDescriptionToFeedback(diagram.step_description,
-            flattenEdgeLabels(diagram.removed_edge!!))
+            flattenEdgeLabels(diagram.removed_edge!))
         return newDiagramStates
     }
 
     function getDiagram(currentIndex: number, diagrams: Diagram[]){
         if(currentIndex < diagrams.length){
-            return diagrams!![currentIndex]!!
+            return diagrams![currentIndex]!
         } else {
             return null
         }
@@ -254,10 +260,13 @@ export default function Container(){
                         <DiagramsArea
                             nodeDataArray={getNodeDataArrayFromDict(leftNodeDataArray)}
                             linkDataArray={getLinkDataArrayFromDict(leftLinkDataArray)}
-                            diagram={leftDiagram}/>
-                        <DiagramsArea nodeDataArray={getNodeDataArrayFromDict(rightNodeDataArray)}
-                                      linkDataArray={getLinkDataArrayFromDict(rightLinkDataArray)}
-                                      diagram={rightDiagram}/>
+                            diagram={leftDiagram}
+                        />
+                        <DiagramsArea
+                            nodeDataArray={getNodeDataArrayFromDict(rightNodeDataArray)}
+                            linkDataArray={getLinkDataArrayFromDict(rightLinkDataArray)}
+                            diagram={rightDiagram}
+                        />
                     </div>
                     <ChangeDiagramsContainer
                         slideValue={slideValue}
@@ -273,6 +282,8 @@ export default function Container(){
                     />
                 </div>
             }
+
+            {homomorphismFeedbackMessage === "No" && <Countermodel diagrammaticProof={diagrammaticProofResponse!}/>}
 
         </div>
     );

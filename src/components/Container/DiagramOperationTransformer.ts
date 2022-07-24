@@ -16,7 +16,7 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
     }
 
     newDiagramStates.nodeDict[diagram.created_node!.name] =
-        {key: newNodeKey, color: 'black', loc: `${+loc[0]} ${+loc[1]-20}`}
+        {key: newNodeKey, color: 'black', loc: `${+loc[0]} ${+loc[1]-20}`, text: ""}
 
     const firstEdgeFromNodeKey = newDiagramStates.nodeDict[diagram.created_edges![0].left_node.name].key
     const firstEdgeToNodeKey = newDiagramStates.nodeDict[diagram.created_edges![0].right_node.name].key
@@ -46,10 +46,10 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
             let locVertical = +nodeLocalization[1]
             if(+nodeLocalization[0] >= minLoc){
                 nodeLocalization[0] = String(+nodeLocalization[0] + 100)
-                nodeDict[key] = { key: entry.key, color: entry.color, loc: `${+nodeLocalization[0]} ${locVertical}`, category: entry.category}
+                nodeDict[key] = { key: entry.key, color: entry.color, loc: `${+nodeLocalization[0]} ${locVertical}`, category: entry.category, text: ""}
             }
             if(+nodeLocalization[1] < minVerticalLoc){
-                nodeDict[key] = { key: entry.key, color: entry.color, loc: `${+nodeLocalization[0]} ${locVertical-20}`, category: entry.category}
+                nodeDict[key] = { key: entry.key, color: entry.color, loc: `${+nodeLocalization[0]} ${locVertical-20}`, category: entry.category, text: ""}
             }
         }
         return nodeDict
@@ -61,7 +61,7 @@ export function removeComposition(diagram: Diagram, newDiagramStates: { nodeDict
             const nodeLocalization = entry.loc.split(" ")
             let locVertical = +nodeLocalization[1]
             if(+nodeLocalization[1] < minVerticalLoc){
-                nodeDict[key] = { key: entry.key, color: entry.color, loc: `${+nodeLocalization[0]} ${locVertical-30}`, category: entry.category}
+                nodeDict[key] = { key: entry.key, color: entry.color, loc: `${+nodeLocalization[0]} ${locVertical-30}`, category: entry.category, text: ""}
             }
         }
         return nodeDict

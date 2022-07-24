@@ -204,10 +204,10 @@ export default function Container(){
     function initializeDiagram(diagram: Diagram, setNodeArray: Function, setLinkArray: Function){
         const nodeDict: NodeToNodeDataDict = {}
         nodeDict[diagram.nodes[0].name] =
-            { key: 0, color: 'black', loc: '0 50', category: "Start" }
+            { key: 0, color: 'black', loc: '0 50', category: "Start", text: ""}
 
         nodeDict[diagram.nodes[1].name] =
-            { key: 1, color: 'black', loc: '100 50', category: "End" }
+            { key: 1, color: 'black', loc: '100 50', category: "End", text: ""}
 
         setNodeArray(nodeDict)
         const linkDict: EdgeToLinkDict = {}

@@ -8,7 +8,7 @@ export interface linkDataEntry{
 }
 
 export interface nodeDataEntry{
-    key: number, color: string, loc: string, category?: string
+    key: number, color: string, loc: string, category?: string, text?: string
 }
 
 export default function DiagramsArea(props: {

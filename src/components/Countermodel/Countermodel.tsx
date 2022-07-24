@@ -103,7 +103,7 @@ export default function Countermodel(props: {
                     {`In this model, we have ${lastLeftRelation[0]} = ${lastLeftRelation[1]} and ${lastRightRelation[0]} = ${lastRightRelation[1]}.`}
                 </div>
                 <div>
-                    {`Hence, ${lastLeftRelation[0]} ⊄ ${lastRightRelation[0]}.}`}
+                    {`Hence, ${lastLeftRelation[0]} ⊄ ${lastRightRelation[0]}.`}
                 </div>
             </div>
         </div>

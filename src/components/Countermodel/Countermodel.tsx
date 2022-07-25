@@ -18,23 +18,29 @@ export default function Countermodel(props: {
         const relationsDivs = []
         for(let label in relations) {
             relationsDivs.push(<div key={label}>
-                {`V${transformInputToSymbol(label)} = {${getPairs(relations[label])}}\n`}
+                {`V${transformInputToSymbol(label)} = ${getPairs(relations[label])}\n`}
             </div>)
         }
         return relationsDivs
     }
 
+    function isADiagramWithoutTransformation(label: string, relations: RelationsDict, direction: string){
+        return Object.values(relations).length === Object.values(props.diagrammaticProof.countermodel.relations).length &&
+            ((relations[label] === Object.values(relations).at(-1) && direction === "RIGHT") ||
+            (relations[label] === Object.values(relations).at(0) && direction === "LEFT"))
+    }
+
     function getRelationsInSide(relations: RelationsDict, direction: string){
         const relationsDivs = []
         for(let label in relations) {
-            if(!(label in props.diagrammaticProof.countermodel.relations)){
+            if(!(label in props.diagrammaticProof.countermodel.relations) || isADiagramWithoutTransformation(label, relations, direction)){
                 if(direction === "LEFT"){
-                    lastLeftRelation = ([`${transformInputToSymbol(label)}`, `{${getPairs(relations[label])}}`])
+                    lastLeftRelation = ([`V${transformInputToSymbol(label)}`, `${getPairs(relations[label])}`])
                 } else {
-                    lastRightRelation = ([`${transformInputToSymbol(label)}`, `{${getPairs(relations[label])}}`])
+                    lastRightRelation = ([`V${transformInputToSymbol(label)}`, `${getPairs(relations[label])}`])
                 }
                 relationsDivs.push(<div key={label}>
-                    {`${transformInputToSymbol(label)} = {${getPairs(relations[label])}}\n`}
+                    {`V${transformInputToSymbol(label)} = ${getPairs(relations[label])}\n`}
                 </div>)
             }
         }
@@ -42,15 +48,14 @@ export default function Countermodel(props: {
     }
 
     function getPairs(pairs: Pair[]){
-        let pairsStr = ""
-        for(let index = 0; index < pairs.length; index++){
-            if(pairs[index].first === -1){
-                pairsStr += "∅, "
-            } else {
-                pairsStr += `(${pairs[index].first}, ${pairs[index].second}), `
-            }
+        if(pairs[0].first === -1){
+            return "∅"
         }
-        return pairsStr.slice(0, -2)
+        let pairsStr = "{"
+        for(let index = 0; index < pairs.length; index++){
+            pairsStr += `(${pairs[index].first}, ${pairs[index].second}), `
+        }
+        return pairsStr.slice(0, -2) + '}'
     }
 
     function getVariables(universe: UniverseDict){
@@ -76,7 +81,7 @@ export default function Countermodel(props: {
             </div>
             <div className={'model-in-side'}>
                 <div>
-                    Applying model M on left:
+                    Calculating the relation defined by the left hand side term in model M:
                 </div>
                 <div>
                     {getRelationsInSide(
@@ -88,7 +93,7 @@ export default function Countermodel(props: {
 
             <div className={'model-in-side'}>
                 <div>
-                    Applying model M on right:
+                    Calculating the relation defined by the right hand side term in model M:
                 </div>
                 <div>
                     {getRelationsInSide(
@@ -100,10 +105,10 @@ export default function Countermodel(props: {
 
             <div id={'conclusion'}>
                 <div>
-                    {`In this model, we have ${lastLeftRelation[0]} = ${lastLeftRelation[1]} and ${lastRightRelation[0]} = ${lastRightRelation[1]}.`}
+                    {`In model M, we have ${lastLeftRelation[0]} = ${lastLeftRelation[1]} and ${lastRightRelation[0]} = ${lastRightRelation[1]}.`}
                 </div>
                 <div>
-                    {`Hence, ${lastLeftRelation[0]} ⊄ ${lastRightRelation[0]}.`}
+                    {`Hence, the inclusion ${lastLeftRelation[0]} ⊄ ${lastRightRelation[0]} is not true in M.`}
                 </div>
             </div>
         </div>

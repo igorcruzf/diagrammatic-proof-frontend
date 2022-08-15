@@ -19,9 +19,9 @@ export default function RelationsInputForm(props: {
     setDiagrammaticProof: Function,
     resetSlidesValue: Function
 }) {
-    const [leftDiagramInput, setLeftDiagramInput] = useState<string>(`(A ${intersection} (B${inverse})) ${composition} C`);
+    const [leftDiagramInput, setLeftDiagramInput] = useState<string>(`R ${composition} (S${intersection}T)`);
     const leftInputRef = useRef<HTMLInputElement>(null);
-    const [rightDiagramInput, setRightDiagramInput] = useState<string>(`(A ${composition} C) ${intersection} ((B${inverse}) ${composition} C)`);
+    const [rightDiagramInput, setRightDiagramInput] = useState<string>(`(R ${composition} S) ${intersection} (R ${composition} T)`);
     const rightInputRef = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false)
 

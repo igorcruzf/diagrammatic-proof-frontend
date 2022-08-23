@@ -1,32 +1,31 @@
 import OperatorButtons from "../OperatorsButtons/OperatorButtons";
 import React, {RefObject, useRef} from "react";
-import {composition, intersection, inverse} from "../RelationsInputForm/RelationsInputForm";
+import {composition, Inputs, intersection, inverse} from "../RelationsInputForm/RelationsInputForm";
 import "./RelationsInput.css"
 
 export default function RelationsInput(props: {
-    leftDiagramInput: string,
-    setLeftDiagramInput: Function,
-    rightDiagramInput: string,
-    setRightDiagramInput: Function
+    inputs: Inputs,
+    setInputs: Function
 }) {
     const leftInputRef = useRef<HTMLInputElement>(null);
     const rightInputRef = useRef<HTMLInputElement>(null);
 
     function invertInput(){
-        const leftInput = props.leftDiagramInput
-        props.setLeftDiagramInput(props.rightDiagramInput)
-        props.setRightDiagramInput(leftInput)
+        props.setInputs({
+            leftInput: props.inputs.rightInput,
+            rightInput: props.inputs.leftInput
+        })
     }
 
     async function handleLeftDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
-        await handleSetInputValue(event.currentTarget.value, leftInputRef, props.setLeftDiagramInput);
+        await handleSetInputValue(event.currentTarget.value, leftInputRef, "LEFT");
     }
 
     async function handleRightDiagramInputChange(event: React.FormEvent<HTMLInputElement>) {
-        await handleSetInputValue(event.currentTarget.value, rightInputRef, props.setRightDiagramInput);
+        await handleSetInputValue(event.currentTarget.value, rightInputRef, "RIGHT");
     }
 
-    async function handleSetInputValue(inputValue: string, inputRef: RefObject<HTMLInputElement>, setInputValue: Function) {
+    async function handleSetInputValue(inputValue: string, inputRef: RefObject<HTMLInputElement>, direction: string) {
         let value = inputRef.current?.selectionStart
 
         let operationLength = 0
@@ -37,7 +36,18 @@ export default function RelationsInput(props: {
             .replaceAll(".", intersection)
             .replaceAll(",", inverse)
 
-        setInputValue(newInputValue)
+        if(direction === "LEFT") {
+            props.setInputs({
+                leftInput: newInputValue,
+                rightInput: props.inputs.rightInput
+            })
+        } else {
+            props.setInputs({
+                rightInput: newInputValue,
+                leftInput: props.inputs.leftInput
+            })
+        }
+
         await inputRef.current?.focus()
 
         inputRef.current?.setSelectionRange(value! + operationLength, value! + operationLength)
@@ -45,8 +55,8 @@ export default function RelationsInput(props: {
 
     return <div id={"relations-input"}>
         <div>
-            <input type="text" value={props.leftDiagramInput} ref={leftInputRef} onChange={handleLeftDiagramInputChange} />
-            <OperatorButtons input={props.leftDiagramInput} setInput={props.setLeftDiagramInput} inputRef={leftInputRef}/>
+            <input type="text" value={props.inputs.leftInput} ref={leftInputRef} onChange={handleLeftDiagramInputChange} />
+            <OperatorButtons inputs={props.inputs} setInputs={props.setInputs} inputRef={leftInputRef} direction={"LEFT"}/>
         </div>
         <div className={"subset-n-invert"}>
             <img id={'subset-eq'} src='images/subseteq.png' alt="Subset equals"/>
@@ -55,8 +65,8 @@ export default function RelationsInput(props: {
             </button>
         </div>
         <div className={"right-input"}>
-            <input type="text" value={props.rightDiagramInput} ref={rightInputRef} onChange={handleRightDiagramInputChange} />
-            <OperatorButtons input={props.rightDiagramInput} setInput={props.setRightDiagramInput} inputRef={rightInputRef}/>
+            <input type="text" value={props.inputs.rightInput} ref={rightInputRef} onChange={handleRightDiagramInputChange} />
+            <OperatorButtons inputs={props.inputs} setInputs={props.setInputs} inputRef={rightInputRef} direction={"RIGHT"}/>
         </div>
     </div>
 }

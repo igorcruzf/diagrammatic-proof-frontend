@@ -15,20 +15,27 @@ export function transformInputToSymbol(input: string){
         .replaceAll("inv", inverse)
 }
 
+export interface Inputs {
+    leftInput: string,
+    rightInput: string
+}
+
 export default function RelationsInputForm(props: {
     setDiagrammaticProof: Function,
     resetSlidesValue: Function
 }) {
-    const [leftDiagramInput, setLeftDiagramInput] = useState<string>(`R ${composition} (S${intersection}T)`);
-    const [rightDiagramInput, setRightDiagramInput] = useState<string>(`(R ${composition} S) ${intersection} (R ${composition} T)`);
+
+    const [diagramInputs, setDiagramInputs] = React.useState<Inputs>({
+        leftInput:`R ${composition} (S${intersection}T)`,
+        rightInput: `(R ${composition} S) ${intersection} (R ${composition} T)`
+    });
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
-
-
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        const leftInput = transformInput(leftDiagramInput)
-        const rightInput = transformInput(rightDiagramInput)
+        const leftInput = transformInput(diagramInputs.leftInput)
+        const rightInput = transformInput(diagramInputs.rightInput)
         setIsLoading(true)
         calculateDiagrammaticProof(leftInput + "inc" + rightInput).then(
             diagrammaticProofResponse => {
@@ -49,10 +56,8 @@ export default function RelationsInputForm(props: {
     return (
         <form className={'form'} onSubmit={handleSubmit}>
             <RelationsInput
-                leftDiagramInput={leftDiagramInput}
-                setLeftDiagramInput={setLeftDiagramInput}
-                rightDiagramInput={rightDiagramInput}
-                setRightDiagramInput={setRightDiagramInput}
+                inputs={diagramInputs}
+                setInputs={setDiagramInputs}
             />
             <input className={'submit-button'} type="submit" value="Submit" />
             <div className={'linear-progress'}>

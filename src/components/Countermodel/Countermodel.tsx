@@ -1,4 +1,5 @@
 import {
+    AtomicTerm,
     DiagrammaticProofServiceResponse,
     Pair,
     RelationsDict,
@@ -18,7 +19,7 @@ export default function Countermodel(props: {
         const relationsDivs = []
         for(let label in relations) {
             relationsDivs.push(<div key={label}>
-                {`V${transformInputToSymbol(label)} = ${getPairs(relations[label])}\n`}
+                {`${transformInputToSymbol(label)} is ${getPairs(relations[label])}\n`}
             </div>)
         }
         return relationsDivs
@@ -26,8 +27,16 @@ export default function Countermodel(props: {
 
     function isADiagramWithoutTransformation(label: string, relations: RelationsDict, direction: string){
         return Object.values(relations).length === Object.values(props.diagrammaticProof.countermodel.relations).length &&
-            ((relations[label] === Object.values(relations).at(-1) && direction === "RIGHT") ||
-            (relations[label] === Object.values(relations).at(0) && direction === "LEFT"))
+            ((rightDiagramEdgeName() === label && direction === "RIGHT") ||
+            ((leftDiagramEdgeName() === label && direction === "LEFT")))
+    }
+
+    function rightDiagramEdgeName(){
+        return (props.diagrammaticProof.right_diagrammatic_proof.diagrams.at(-1)!.edges[0].label as AtomicTerm).name
+    }
+
+    function leftDiagramEdgeName(){
+        return (props.diagrammaticProof.left_diagrammatic_proof.diagrams.at(-1)!.edges[0].label as AtomicTerm).name
     }
 
     function getRelationsInSide(relations: RelationsDict, direction: string){
@@ -35,12 +44,13 @@ export default function Countermodel(props: {
         for(let label in relations) {
             if(!(label in props.diagrammaticProof.countermodel.relations) || isADiagramWithoutTransformation(label, relations, direction)){
                 if(direction === "LEFT"){
-                    lastLeftRelation = ([`V${transformInputToSymbol(label)}`, `${getPairs(relations[label])}`])
+                    lastLeftRelation = ([`${transformInputToSymbol(label)}`, `${getPairs(relations[label])}`])
                 } else {
-                    lastRightRelation = ([`V${transformInputToSymbol(label)}`, `${getPairs(relations[label])}`])
+                    console.log(relations)
+                    lastRightRelation = ([`${transformInputToSymbol(label)}`, `${getPairs(relations[label])}`])
                 }
                 relationsDivs.push(<div key={label}>
-                    {`V${transformInputToSymbol(label)} = ${getPairs(relations[label])}\n`}
+                    {`${transformInputToSymbol(label)} is ${getPairs(relations[label])}\n`}
                 </div>)
             }
         }
@@ -97,15 +107,15 @@ export default function Countermodel(props: {
                 </div>
                 <div>
                     {getRelationsInSide(
-                        props.diagrammaticProof.right_diagrammatic_proof.diagrams[0].countermodel_relations
-                        ,"RIGHT"
+                        props.diagrammaticProof.right_diagrammatic_proof.diagrams[0].countermodel_relations,
+                        "RIGHT"
                     )}
                 </div>
             </div>
 
             <div id={'conclusion'}>
                 <div>
-                    {`In model M, we have ${lastLeftRelation[0]} = ${lastLeftRelation[1]} and ${lastRightRelation[0]} = ${lastRightRelation[1]}.`}
+                    {`In model M, we have ${lastLeftRelation[0]} is ${lastLeftRelation[1]} and ${lastRightRelation[0]} is ${lastRightRelation[1]}.`}
                 </div>
                 <div>
                     {`Hence, the inclusion ${lastLeftRelation[0]} ⊄ ${lastRightRelation[0]} is not true in M.`}

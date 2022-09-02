@@ -1,0 +1,20 @@
+#hypotheses-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    background-color: #faf3f3;
+    border-radius: 50px;
+}
+
+.list{
+    margin-right: 15px;
+    margin-top: 10px
+}
+
+@media (max-width:700px) {
+    #hypotheses-list {
+        display: none;
+    }
+}

@@ -1,7 +1,11 @@
 import {DiagrammaticProofServiceResponse} from "./DiagrammaticProofInterfaces";
 
-export function calculateDiagrammaticProof(expression: string): Promise<DiagrammaticProofServiceResponse> {
-    return fetch(`https://diagrammatic-proof-service.herokuapp.com/diagrams/validate-homomorphism?expression=${expression}`, {
+export function calculateDiagrammaticProof(expression: string, hypotheses?: string): Promise<DiagrammaticProofServiceResponse> {
+    let url = `https://diagrammatic-proof-service.herokuapp.com/diagrams/validate-homomorphism?expression=${expression}`
+    if(hypotheses != null && hypotheses.length > 0){
+        url += `&hypotheses=${hypotheses}`
+    }
+    return fetch(url, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',

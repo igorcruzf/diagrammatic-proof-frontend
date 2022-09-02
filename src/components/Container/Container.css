@@ -13,14 +13,14 @@
     margin-top: -50px;
     flex-direction: row;
     margin-left: 140px;
-    align-items: center;
+    align-items: flex-end;
     justify-items: center;
     justify-content: center;
     gap: 10px
 }
 
 #interrogation-text{
-    margin-bottom: 50px;
+    margin-bottom: 90px;
     font-weight: bold;
     color: #3d3d3d;
     font-size: 35px;
@@ -28,7 +28,7 @@
 }
 
 #validation-text{
-    margin-bottom: 50px;
+    margin-bottom: 95px;
     font-weight: bold;
     font-size: 25px;
     width: 100px;
@@ -88,20 +88,20 @@
         margin-top: -50px;
         flex-direction: row;
         margin-left: 0;
-        align-items: center;
+        align-items: flex-end;
         justify-items: center;
         justify-content: center;
         gap: 5px
     }
 
     #interrogation-text{
-        margin-bottom: 15px;
+        margin-bottom: 75px;
         color: #3d3d3d;
         font-size: 15px;
     }
 
     #validation-text{
-        margin-bottom: 15px;
+        margin-bottom: 75px;
         margin-right: 0;
         font-weight: bold;
         font-size: 15px;

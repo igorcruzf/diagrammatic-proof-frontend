@@ -3,6 +3,7 @@ import {calculateDiagrammaticProof} from "../../services/DiagrammaticProofServic
 import "./RelationsInputForm.css"
 import {LinearProgress} from "@mui/material";
 import RelationsInput from "../RelationsInput/RelationsInput";
+import Hypotheses, {InputsIndexed} from "../Hypotheses/Hypotheses";
 
 export const composition = "ο"
 export const intersection = "∩"
@@ -15,22 +16,45 @@ export function transformInputToSymbol(input: string){
         .replaceAll("inv", inverse)
 }
 
+export interface Inputs {
+    leftInput: string,
+    rightInput: string
+}
+
 export default function RelationsInputForm(props: {
     setDiagrammaticProof: Function,
     resetSlidesValue: Function
 }) {
-    const [leftDiagramInput, setLeftDiagramInput] = useState<string>(`R ${composition} (S${intersection}T)`);
-    const [rightDiagramInput, setRightDiagramInput] = useState<string>(`(R ${composition} S) ${intersection} (R ${composition} T)`);
+
+    const [inputsList, setInputsList] = React.useState<InputsIndexed[]>([]);
+
+    const [diagramInputs, setDiagramInputs] = React.useState<Inputs>({
+        leftInput:`R ${composition} (S${intersection}T)`,
+        rightInput: `(R ${composition} S) ${intersection} (R ${composition} T)`
+    });
+
+    const [unchecked, setUnchecked] = React.useState<number[]>([]);
+
     const [isLoading, setIsLoading] = useState<boolean>(false)
-
-
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        const leftInput = transformInput(leftDiagramInput)
-        const rightInput = transformInput(rightDiagramInput)
+        const leftInput = transformInput(diagramInputs.leftInput)
+        const rightInput = transformInput(diagramInputs.rightInput)
         setIsLoading(true)
-        calculateDiagrammaticProof(leftInput + "inc" + rightInput).then(
+
+        const hypotheses = inputsList.filter( indexedInputs =>
+            unchecked.indexOf(indexedInputs.index) === -1
+        ).map(indexedInputs => {
+            const leftHypothesisInput = transformInput(indexedInputs.inputs.leftInput)
+            const rightHypothesisInput = transformInput(indexedInputs.inputs.rightInput)
+            return leftHypothesisInput + "inc" + rightHypothesisInput
+        }).join(",")
+
+        calculateDiagrammaticProof(
+            leftInput + "inc" + rightInput,
+            hypotheses
+        ).then(
             diagrammaticProofResponse => {
                 setIsLoading(false)
                 props.resetSlidesValue()
@@ -48,11 +72,15 @@ export default function RelationsInputForm(props: {
 
     return (
         <form className={'form'} onSubmit={handleSubmit}>
+            <Hypotheses
+                inputsList={inputsList}
+                setInputsList={setInputsList}
+                unchecked={unchecked}
+                setUnchecked={setUnchecked}
+            />
             <RelationsInput
-                leftDiagramInput={leftDiagramInput}
-                setLeftDiagramInput={setLeftDiagramInput}
-                rightDiagramInput={rightDiagramInput}
-                setRightDiagramInput={setRightDiagramInput}
+                inputs={diagramInputs}
+                setInputs={setDiagramInputs}
             />
             <input className={'submit-button'} type="submit" value="Submit" />
             <div className={'linear-progress'}>

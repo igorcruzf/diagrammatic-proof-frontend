@@ -9,7 +9,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import RelationsInput from "../RelationsInput/RelationsInput";
 import {InputsIndexed} from "./Hypotheses";
 import {Inputs} from "../RelationsInputForm/RelationsInputForm";
-import "./CheckboxList.css"
 
 export default function CheckboxList(props: {
     inputsList: InputsIndexed[]
@@ -50,10 +49,10 @@ export default function CheckboxList(props: {
                         }
                     >
                         <ListItemButton role={undefined}
-                                        sx={{m: 0, p: 0}}
+                                        sx={{m: 0, p: 0, maxWidth:"10px", marginBottom:"10px"}}
                         >
                             <ListItemIcon
-                                sx = {{padding: "0px"}}
+                                sx = {{padding: "0px", maxWidth:"10px"}}
                             >
                                 <Checkbox
                                     checked={props.unchecked.indexOf(value.index) === -1}

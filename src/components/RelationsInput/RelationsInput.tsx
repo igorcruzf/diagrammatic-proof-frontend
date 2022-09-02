@@ -54,7 +54,7 @@ export default function RelationsInput(props: {
     }
 
     return <div id={"relations-input"}>
-        <div>
+        <div className={"left-input"}>
             <input type="text" value={props.inputs.leftInput} ref={leftInputRef} onChange={handleLeftDiagramInputChange} />
             <OperatorButtons inputs={props.inputs} setInputs={props.setInputs} inputRef={leftInputRef} direction={"LEFT"}/>
         </div>

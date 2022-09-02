@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import DiagramsArea, {linkDataEntry, nodeDataEntry} from "../Diagram/DiagramsArea";
 import {customDiagram} from "../Diagram/GoCustomDiagram";
-import RelationsInputForm from "../RelationsInputForm/RelationsInputForm";
+import RelationsInputForm, {transformInputToSymbol} from "../RelationsInputForm/RelationsInputForm";
 import './Container.css'
 import {Diagram, DiagrammaticProofServiceResponse} from "../../services/DiagrammaticProofInterfaces";
 import ChangeDiagramsContainer from "../ChangeDiagramsContainer/ChangeDiagramsContainer";
 import {flattenEdgeLabels} from "../../services/FlattenEdge";
-import {removeComposition, removeIntersection, removeInverse} from "./DiagramOperationTransformer";
+import {addHypothesis, removeComposition, removeIntersection, removeInverse} from "./DiagramOperationTransformer";
 import createHomomorphicState, {createNonHomomorphicState} from "./DiagramHomomorphismTransformer";
 import Countermodel from "../Countermodel/Countermodel";
 
@@ -160,13 +160,13 @@ export default function Container(){
             case "BEGIN":
                 return "Initial diagram"
             case "REMOVE_INVERSE":
-                return `Transforming inverse in ${label}`
+                return `Transforming inverse in ${label!}`
             case "REMOVE_COMPOSITION":
-                return `Transforming composition in ${label}`
+                return `Transforming composition in ${label!}`
             case "REMOVE_INTERSECTION":
-                return `Transforming intersection in ${label}`
+                return `Transforming intersection in ${label!}`
             default:
-                return description
+                return transformInputToSymbol(description)
         }
     }
 
@@ -185,11 +185,15 @@ export default function Container(){
             case "REMOVE_INTERSECTION":
                 removeIntersection(newDiagramStates, diagram);
                 break
+            case "BEGIN":
+                break
             default:
+                addHypothesis(newDiagramStates, diagram)
                 break
         }
         newDiagramStates.feedBackMessage = convertDescriptionToFeedback(diagram.step_description,
-            flattenEdgeLabels(diagram.removed_edge!))
+            diagram.removed_edge !== null? flattenEdgeLabels(diagram.removed_edge!) : undefined
+        )
         return newDiagramStates
     }
 

@@ -80,6 +80,14 @@ export function removeIntersection(newDiagramStates: { nodeDict: NodeToNodeDataD
     delete newDiagramStates.linkDict[diagram!.removed_edge!.id]
 }
 
+export function addHypothesis(newDiagramStates: { nodeDict: NodeToNodeDataDict; linkDict: EdgeToLinkDict }, diagram: Diagram) {
+    const hypothesisEdge = diagram.edges.at(diagram.edges.length - 1)!
+    const fromNode = newDiagramStates.nodeDict[hypothesisEdge.left_node.name]
+    const toNode = newDiagramStates.nodeDict[hypothesisEdge.right_node.name]
+    newDiagramStates.linkDict[hypothesisEdge.id] =
+        {key: -Math.random(), from: fromNode.key, to: toNode.key, text: flattenEdgeLabels(hypothesisEdge)}
+}
+
 export function removeInverse(newDiagramStates: { nodeDict: NodeToNodeDataDict; linkDict: EdgeToLinkDict }, diagram: Diagram) {
     const link = newDiagramStates.linkDict[diagram!.removed_edge!.id]
     const newEdge = flattenEdgeLabels(diagram!.created_edges![0])

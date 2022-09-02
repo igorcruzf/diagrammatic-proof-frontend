@@ -3,6 +3,7 @@ import {calculateDiagrammaticProof} from "../../services/DiagrammaticProofServic
 import "./RelationsInputForm.css"
 import {LinearProgress} from "@mui/material";
 import RelationsInput from "../RelationsInput/RelationsInput";
+import Hypotheses, {InputsIndexed} from "../Hypotheses/Hypotheses";
 
 export const composition = "ο"
 export const intersection = "∩"
@@ -25,10 +26,14 @@ export default function RelationsInputForm(props: {
     resetSlidesValue: Function
 }) {
 
+    const [inputsList, setInputsList] = React.useState<InputsIndexed[]>([]);
+
     const [diagramInputs, setDiagramInputs] = React.useState<Inputs>({
         leftInput:`R ${composition} (S${intersection}T)`,
         rightInput: `(R ${composition} S) ${intersection} (R ${composition} T)`
     });
+
+    const [unchecked, setUnchecked] = React.useState<number[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -37,7 +42,19 @@ export default function RelationsInputForm(props: {
         const leftInput = transformInput(diagramInputs.leftInput)
         const rightInput = transformInput(diagramInputs.rightInput)
         setIsLoading(true)
-        calculateDiagrammaticProof(leftInput + "inc" + rightInput).then(
+
+        const hypotheses = inputsList.filter( indexedInputs =>
+            unchecked.indexOf(indexedInputs.index) === -1
+        ).map(indexedInputs => {
+            const leftHypothesisInput = transformInput(indexedInputs.inputs.leftInput)
+            const rightHypothesisInput = transformInput(indexedInputs.inputs.rightInput)
+            return leftHypothesisInput + "inc" + rightHypothesisInput
+        }).join(",")
+
+        calculateDiagrammaticProof(
+            leftInput + "inc" + rightInput,
+            hypotheses
+        ).then(
             diagrammaticProofResponse => {
                 setIsLoading(false)
                 props.resetSlidesValue()
@@ -55,6 +72,12 @@ export default function RelationsInputForm(props: {
 
     return (
         <form className={'form'} onSubmit={handleSubmit}>
+            <Hypotheses
+                inputsList={inputsList}
+                setInputsList={setInputsList}
+                unchecked={unchecked}
+                setUnchecked={setUnchecked}
+            />
             <RelationsInput
                 inputs={diagramInputs}
                 setInputs={setDiagramInputs}

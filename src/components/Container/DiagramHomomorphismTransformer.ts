@@ -38,13 +38,17 @@ export function createNonHomomorphicState(diagrammaticProof: DiagrammaticProofSe
                                                diagrammaticProofState: DiagrammaticProofState
 ) {
     const newLeftStates = structuredClone(diagrammaticProofState.leftDiagram)
+    const newRightStates = structuredClone(diagrammaticProofState.rightDiagram)
 
     for(let key in newLeftStates.nodeDict){
         newLeftStates.nodeDict[key].text = diagrammaticProof.countermodel.universe[key]
     }
+
+    newLeftStates.feedBackMessage = "Showing countermodel"
+    newRightStates.feedBackMessage = "Showing countermodel"
     return {
         leftDiagram: newLeftStates,
-        rightDiagram: diagrammaticProofState.rightDiagram
+        rightDiagram: newRightStates
     }
 }
 export const colorList = [

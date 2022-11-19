@@ -16,11 +16,6 @@ export default function MenuButtons(){
                   to="/tutorial"
                   component={RouterLink}
                   >Tutorial</Link>
-            <Link underline="hover"
-                  color="inherit"
-                  to="/tutorial"
-                  component={RouterLink}
-            >About</Link>
         </div>
         <div id={'divider'}/>
     </div>

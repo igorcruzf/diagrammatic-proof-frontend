@@ -6,7 +6,7 @@ export interface DiagrammaticProofServiceResponse {
 }
 
 interface Countermodel{
-    homomorphic: boolean,
+    is_homomorphic: boolean,
     universe: UniverseDict,
     relations: RelationsDict
 }
@@ -35,7 +35,7 @@ export interface Diagram {
     removed_edge?: DiagramEdge,
     created_edges?: DiagramEdge[]
     created_node?: DiagramNode
-    countermodel_relations: RelationsDict
+    countermodel_relations?: RelationsDict
 }
 
 interface DiagramNode {

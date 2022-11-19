@@ -95,7 +95,7 @@ export default function Countermodel(props: {
                 </div>
                 <div>
                     {getRelationsInSide(
-                        props.diagrammaticProof.left_diagrammatic_proof.diagrams[0].countermodel_relations,
+                        props.diagrammaticProof.left_diagrammatic_proof.diagrams[0].countermodel_relations!,
                         "LEFT"
                     )}
                 </div>
@@ -107,7 +107,7 @@ export default function Countermodel(props: {
                 </div>
                 <div>
                     {getRelationsInSide(
-                        props.diagrammaticProof.right_diagrammatic_proof.diagrams[0].countermodel_relations,
+                        props.diagrammaticProof.right_diagrammatic_proof.diagrams[0].countermodel_relations!,
                         "RIGHT"
                     )}
                 </div>
@@ -118,7 +118,7 @@ export default function Countermodel(props: {
                     {`In model M, we have ${lastLeftRelation[0]} is ${lastLeftRelation[1]} and ${lastRightRelation[0]} is ${lastRightRelation[1]}.`}
                 </div>
                 <div>
-                    {`Hence, the inclusion ${lastLeftRelation[0]} ⊄ ${lastRightRelation[0]} is not true in M.`}
+                    {`Hence, the inclusion ${lastLeftRelation[0]} ⊆ ${lastRightRelation[0]} is not true in M.`}
                 </div>
             </div>
         </div>

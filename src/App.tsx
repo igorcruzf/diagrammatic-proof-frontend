@@ -13,7 +13,6 @@ function App() {
         <Routes>
             <Route path="/" element={<MainPage/>}/>
             <Route path="/tutorial" element={<TutorialPage/>}/>
-            <Route path="/about" element={<TutorialPage/>}/>
         </Routes>
     </div>
 

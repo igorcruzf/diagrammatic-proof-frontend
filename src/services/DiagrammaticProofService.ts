@@ -1,7 +1,7 @@
 import {DiagrammaticProofServiceResponse} from "./DiagrammaticProofInterfaces";
 
 export function calculateDiagrammaticProof(expression: string, hypotheses?: string): Promise<DiagrammaticProofServiceResponse> {
-    let url = `https://diagrammatic-proof-service.herokuapp.com/diagrams/validate-homomorphism?expression=${expression}`
+    let url = `http://localhost:8080/diagrams/validate-homomorphism?expression=${expression}`
     if(hypotheses != null && hypotheses.length > 0){
         url += `&hypotheses=${hypotheses}`
     }

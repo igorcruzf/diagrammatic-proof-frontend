@@ -109,7 +109,6 @@ export default function Container(){
         const leftDiagramsLength = diagrammaticProof.left_diagrammatic_proof.diagrams.length
         const rightDiagramsLength = diagrammaticProof.right_diagrammatic_proof.diagrams.length
         setIsHomomorphic(diagrammaticProof.countermodel.is_homomorphic)
-        console.log("UE -> " + diagrammaticProof.countermodel.is_homomorphic)
         setLeftSlideMaxIndex(leftDiagramsLength)
         setRightSlideMaxIndex(rightDiagramsLength)
 
